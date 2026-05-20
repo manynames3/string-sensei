@@ -1,5 +1,5 @@
-import { GUITAR_STRINGS, TUNING_PRESETS } from "./notes.js?v=10";
-import { TUNER_STATES } from "./tunerLogic.js?v=10";
+import { GUITAR_STRINGS, TUNING_PRESETS } from "./notes.js?v=11";
+import { TUNER_STATES } from "./tunerLogic.js?v=11";
 
 const MESSAGES = {
   [TUNER_STATES.FLAT]: [
@@ -23,8 +23,8 @@ const MESSAGES = {
     "Play a single string and let it ring."
   ],
   [TUNER_STATES.QUIET]: [
-    "I can barely hear it. Pluck one string a little louder.",
-    "Tiny whisper detected. Move closer to the mic and let the note ring."
+    "Low signal, not silence. Sensei is leaning in.",
+    "Give it one confident pluck and let the note bloom."
   ],
   [TUNER_STATES.NO_PITCH]: [
     "I hear sound, but not a clean note yet.",

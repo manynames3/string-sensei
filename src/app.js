@@ -6,7 +6,7 @@ import {
   renderStringOptions,
   renderToneButtons,
   renderTuningOptions
-} from "./components.js?v=10";
+} from "./components.js?v=11";
 import {
   DEFAULT_CALIBRATION_HZ,
   formatCents,
@@ -14,12 +14,16 @@ import {
   getFrequencyRange,
   getTuningTargets,
   normalizeCalibration
-} from "./notes.js?v=10";
-import { detectPitchYin, PitchSmoother } from "./pitchDetection.js?v=10";
-import { clampCents, getTuningReading, TUNER_STATES } from "./tunerLogic.js?v=10";
+} from "./notes.js?v=11";
+import { detectPitchYin, PitchSmoother } from "./pitchDetection.js?v=11";
+import { clampCents, getTuningReading, TUNER_STATES } from "./tunerLogic.js?v=11";
 
 const PREFERENCES_KEY = "string-sensei-preferences";
 const GUIDED_LOCK_FRAMES = 22;
+const ANALYSER_FFT_SIZE = 8192;
+const PITCH_RMS_THRESHOLD = 0.004;
+const PITCH_YIN_THRESHOLD = 0.14;
+const MISSED_PITCH_FRAMES_BEFORE_STATE_CHANGE = 18;
 
 const elements = {
   panel: document.querySelector(".status-panel"),
@@ -142,7 +146,7 @@ async function startTuning() {
       await audioContext.resume();
     }
     const analyser = audioContext.createAnalyser();
-    analyser.fftSize = 4096;
+    analyser.fftSize = ANALYSER_FFT_SIZE;
     analyser.smoothingTimeConstant = 0;
 
     const source = audioContext.createMediaStreamSource(stream);
@@ -178,7 +182,9 @@ function listen(timestamp = 0) {
   const range = getFrequencyRange(settings.tuningId, settings.calibrationHz);
   const pitch = detectPitchYin(state.data, state.audioContext.sampleRate, {
     minFrequency: range.min,
-    maxFrequency: range.max
+    maxFrequency: range.max,
+    rmsThreshold: PITCH_RMS_THRESHOLD,
+    threshold: PITCH_YIN_THRESHOLD
   });
 
   if (pitch.frequency) {
@@ -189,7 +195,7 @@ function listen(timestamp = 0) {
   } else {
     state.stableMisses += 1;
     state.guided.tunedFrames = 0;
-    if (state.stableMisses > 8) {
+    if (state.stableMisses > MISSED_PITCH_FRAMES_BEFORE_STATE_CHANGE) {
       state.smoother.reset();
       const nextState = pitch.reason === "quiet" ? TUNER_STATES.QUIET : TUNER_STATES.NO_PITCH;
       setVisualState(nextState);
