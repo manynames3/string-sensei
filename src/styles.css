@@ -968,6 +968,11 @@ input:focus-visible {
     grid-template-columns: 1fr;
   }
 
+  .controls > * {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
   .readout-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     text-align: left;
