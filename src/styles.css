@@ -398,11 +398,16 @@ h2 {
 
 #status-message {
   max-width: 600px;
+  block-size: calc(2 * 1.34em);
   margin-bottom: 0;
   color: var(--muted);
   font-size: clamp(0.98rem, 1.7vw, 1.16rem);
   line-height: 1.34;
   font-weight: 700;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .readout-grid {
@@ -439,6 +444,7 @@ h2 {
 
 .readout strong {
   display: block;
+  min-block-size: 2em;
   color: var(--ink);
   font-size: clamp(1.16rem, 2.6vw, 1.9rem);
   line-height: 1;
