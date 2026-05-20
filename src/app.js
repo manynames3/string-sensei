@@ -6,7 +6,7 @@ import {
   renderStringOptions,
   renderToneButtons,
   renderTuningOptions
-} from "./components.js?v=11";
+} from "./components.js?v=12";
 import {
   DEFAULT_CALIBRATION_HZ,
   formatCents,
@@ -14,16 +14,18 @@ import {
   getFrequencyRange,
   getTuningTargets,
   normalizeCalibration
-} from "./notes.js?v=11";
-import { detectPitchYin, PitchSmoother } from "./pitchDetection.js?v=11";
-import { clampCents, getTuningReading, TUNER_STATES } from "./tunerLogic.js?v=11";
+} from "./notes.js?v=12";
+import { detectPitchYin, PitchSmoother } from "./pitchDetection.js?v=12";
+import { clampCents, getTuningReading, TUNER_STATES } from "./tunerLogic.js?v=12";
 
 const PREFERENCES_KEY = "string-sensei-preferences";
 const GUIDED_LOCK_FRAMES = 22;
 const ANALYSER_FFT_SIZE = 8192;
-const PITCH_RMS_THRESHOLD = 0.004;
-const PITCH_YIN_THRESHOLD = 0.14;
-const MISSED_PITCH_FRAMES_BEFORE_STATE_CHANGE = 18;
+const PITCH_RMS_THRESHOLD = 0.0015;
+const PITCH_YIN_THRESHOLD = 0.18;
+const PITCH_ANALYSIS_SIZE = 3072;
+const MISSED_PITCH_FRAMES_BEFORE_READING = 36;
+const MISSED_PITCH_FRAMES_AFTER_READING = 110;
 
 const elements = {
   panel: document.querySelector(".status-panel"),
@@ -136,7 +138,8 @@ async function startTuning() {
       audio: {
         echoCancellation: false,
         noiseSuppression: false,
-        autoGainControl: false
+        autoGainControl: true,
+        channelCount: 1
       }
     });
 
@@ -184,7 +187,8 @@ function listen(timestamp = 0) {
     minFrequency: range.min,
     maxFrequency: range.max,
     rmsThreshold: PITCH_RMS_THRESHOLD,
-    threshold: PITCH_YIN_THRESHOLD
+    threshold: PITCH_YIN_THRESHOLD,
+    analysisSize: PITCH_ANALYSIS_SIZE
   });
 
   if (pitch.frequency) {
@@ -195,8 +199,17 @@ function listen(timestamp = 0) {
   } else {
     state.stableMisses += 1;
     state.guided.tunedFrames = 0;
-    if (state.stableMisses > MISSED_PITCH_FRAMES_BEFORE_STATE_CHANGE) {
+
+    // Guitar notes decay unevenly, especially through laptop and phone mics.
+    // Hold the last useful reading briefly instead of flashing to "Play Louder".
+    const missedPitchLimit = state.lastReading
+      ? MISSED_PITCH_FRAMES_AFTER_READING
+      : MISSED_PITCH_FRAMES_BEFORE_READING;
+
+    if (state.stableMisses > missedPitchLimit) {
       state.smoother.reset();
+      state.lastReading = null;
+      state.stableMisses = 0;
       const nextState = pitch.reason === "quiet" ? TUNER_STATES.QUIET : TUNER_STATES.NO_PITCH;
       setVisualState(nextState);
       resetReadouts();

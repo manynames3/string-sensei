@@ -42,10 +42,10 @@ export function calculateRms(buffer) {
 }
 
 export function detectPitchYin(buffer, sampleRate, options = {}) {
-  const threshold = options.threshold ?? 0.14;
+  const threshold = options.threshold ?? 0.18;
   const minFrequency = options.minFrequency ?? 65;
   const maxFrequency = options.maxFrequency ?? 380;
-  const rmsThreshold = options.rmsThreshold ?? 0.004;
+  const rmsThreshold = options.rmsThreshold ?? 0.0015;
   const rms = calculateRms(buffer);
 
   if (rms < rmsThreshold) {
@@ -54,13 +54,18 @@ export function detectPitchYin(buffer, sampleRate, options = {}) {
 
   const tauMin = Math.max(2, Math.floor(sampleRate / maxFrequency));
   const tauMax = Math.min(Math.floor(sampleRate / minFrequency), Math.floor(buffer.length / 2));
+  const maxComparableSamples = buffer.length - tauMax;
+  if (maxComparableSamples < 32) {
+    return { frequency: null, confidence: 0, reason: "unstable", rms };
+  }
+  const analysisSize = Math.min(options.analysisSize ?? 3072, maxComparableSamples);
   const yin = new Float32Array(tauMax + 1);
 
   // YIN compares the waveform against delayed copies of itself. The first delay
   // with a small normalized difference is the likely period of the note.
   for (let tau = 1; tau <= tauMax; tau += 1) {
     let delta = 0;
-    for (let index = 0; index < tauMax; index += 1) {
+    for (let index = 0; index < analysisSize; index += 1) {
       const difference = buffer[index] - buffer[index + tau];
       delta += difference * difference;
     }
