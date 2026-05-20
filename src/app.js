@@ -1,11 +1,12 @@
 import {
   cycleStateMessage,
+  getChaosLine,
   getStateCopy,
   renderMascot,
   renderStringOptions,
   renderToneButtons,
   renderTuningOptions
-} from "./components.js?v=9";
+} from "./components.js?v=10";
 import {
   DEFAULT_CALIBRATION_HZ,
   formatCents,
@@ -13,9 +14,9 @@ import {
   getFrequencyRange,
   getTuningTargets,
   normalizeCalibration
-} from "./notes.js?v=9";
-import { detectPitchYin, PitchSmoother } from "./pitchDetection.js?v=9";
-import { clampCents, getTuningReading, TUNER_STATES } from "./tunerLogic.js?v=9";
+} from "./notes.js?v=10";
+import { detectPitchYin, PitchSmoother } from "./pitchDetection.js?v=10";
+import { clampCents, getTuningReading, TUNER_STATES } from "./tunerLogic.js?v=10";
 
 const PREFERENCES_KEY = "string-sensei-preferences";
 const GUIDED_LOCK_FRAMES = 22;
@@ -40,7 +41,9 @@ const elements = {
   tuningPreset: document.querySelector("#tuning-preset"),
   calibration: document.querySelector("#calibration"),
   stringMode: document.querySelector("#string-mode"),
-  toneButtons: document.querySelector("#tone-buttons")
+  toneButtons: document.querySelector("#tone-buttons"),
+  chaosActions: document.querySelector("#chaos-actions"),
+  chaosOutput: document.querySelector("#chaos-output")
 };
 
 const state = {
@@ -52,6 +55,7 @@ const state = {
   animationFrame: null,
   smoother: new PitchSmoother({ maxSamples: 6, maxJumpCents: 80 }),
   currentState: TUNER_STATES.IDLE,
+  lastReading: null,
   stableMisses: 0,
   lastMessageTick: 0,
   guided: {
@@ -68,6 +72,7 @@ elements.startButton.addEventListener("click", startTuning);
 elements.stopButton.addEventListener("click", stopTuning);
 elements.guidedButton.addEventListener("click", toggleGuidedMode);
 elements.toneButtons.addEventListener("click", playReferenceTone);
+elements.chaosActions.addEventListener("click", handleChaosAction);
 elements.tuningPreset.addEventListener("change", () => {
   stopGuidedMode();
   refreshControls("auto");
@@ -207,6 +212,7 @@ function updateFromReading(reading) {
     return;
   }
 
+  state.lastReading = reading;
   setVisualState(reading.state);
   elements.frequency.textContent = formatFrequency(reading.frequency);
   elements.targetNote.textContent = `${reading.target.id} ${reading.target.frequency.toFixed(2)} Hz`;
@@ -264,6 +270,7 @@ function stopTuning() {
   state.animationFrame = null;
   state.smoother.reset();
   state.guided.tunedFrames = 0;
+  state.lastReading = null;
 
   elements.startButton.hidden = false;
   elements.stopButton.hidden = true;
@@ -420,6 +427,26 @@ async function playReferenceTone(event) {
   oscillator.start();
   oscillator.stop(context.currentTime + 1.25);
   oscillator.addEventListener("ended", () => context.close());
+}
+
+function handleChaosAction(event) {
+  const button = event.target.closest("[data-chaos]");
+  if (!button) return;
+
+  const selectedTarget = currentTargets().find((target) => target.key === elements.stringMode.value);
+  const reading = state.lastReading;
+  const line = getChaosLine(button.dataset.chaos, {
+    state: state.currentState,
+    note: reading?.target?.id ?? selectedTarget?.id ?? "Auto",
+    cents: reading && Number.isFinite(reading.cents) ? formatCents(reading.cents) : null,
+    frequency: reading ? formatFrequency(reading.frequency) : null
+  });
+
+  elements.chaosOutput.textContent = line;
+  elements.chaosOutput.dataset.status = state.currentState;
+  elements.chaosOutput.classList.remove("chaos-pop");
+  void elements.chaosOutput.offsetWidth;
+  elements.chaosOutput.classList.add("chaos-pop");
 }
 
 function refreshControls(selectedStringKey = "auto") {

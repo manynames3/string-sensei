@@ -12,7 +12,7 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./assets/icon.svg" />
-    <link rel="stylesheet" href="./src/styles.css?v=9" />
+    <link rel="stylesheet" href="./src/styles.css?v=10" />
   </head>
   <body>
     <main class="shell">
@@ -27,12 +27,6 @@
       </section>
 
       <section class="tuner-app" aria-label="Guitar tuner">
-        <div class="trust-strip" aria-label="Product trust notes">
-          <span>Audio stays on your device</span>
-          <span>No account required</span>
-          <span>Secure browser tuning</span>
-        </div>
-
         <div class="status-panel" data-status="idle">
           <div class="mascot-wrap" id="mascot" aria-live="polite"></div>
           <div class="status-main">
@@ -112,23 +106,21 @@
           <div class="tone-buttons" id="tone-buttons"></div>
         </div>
 
-        <div class="help-grid">
-          <details>
-            <summary>Mic tips</summary>
-            <p>Use one ringing string, mute the others, keep the room quiet, and move the guitar closer if the app says the signal is too quiet.</p>
-          </details>
-          <details>
-            <summary>Privacy</summary>
-            <p>The microphone stream is analyzed in this browser tab. The app has no backend and does not upload or store raw audio.</p>
-          </details>
-          <details>
-            <summary>Accuracy notes</summary>
-            <p>Phone and laptop microphones vary. Use calibration when matching another tuner, piano, or rehearsal room reference.</p>
-          </details>
+        <div class="fun-panel" aria-label="Funny tuner extras">
+          <div class="section-heading">
+            <h3>Sensei Chaos</h3>
+            <p>Bonus panel for roasts, excuses, and victory laps.</p>
+          </div>
+          <div class="chaos-actions" id="chaos-actions">
+            <button class="chaos-button" type="button" data-chaos="roast">Roast</button>
+            <button class="chaos-button" type="button" data-chaos="excuse">Excuse</button>
+            <button class="chaos-button" type="button" data-chaos="victory">Victory</button>
+          </div>
+          <p class="chaos-output" id="chaos-output" aria-live="polite">Pluck a string, then let Sensei editorialize.</p>
         </div>
       </section>
     </main>
 
-    <script type="module" src="./src/app.js?v=9"></script>
+    <script type="module" src="./src/app.js?v=10"></script>
   </body>
 </html>

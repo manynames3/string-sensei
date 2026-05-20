@@ -1,5 +1,5 @@
-import { GUITAR_STRINGS, TUNING_PRESETS } from "./notes.js?v=9";
-import { TUNER_STATES } from "./tunerLogic.js?v=9";
+import { GUITAR_STRINGS, TUNING_PRESETS } from "./notes.js?v=10";
+import { TUNER_STATES } from "./tunerLogic.js?v=10";
 
 const MESSAGES = {
   [TUNER_STATES.FLAT]: [
@@ -87,6 +87,61 @@ export function getStateCopy(state) {
 export function cycleStateMessage(state) {
   const messages = MESSAGES[state] ?? MESSAGES[TUNER_STATES.IDLE];
   messageIndex = (messageIndex + 1) % messages.length;
+}
+
+const CHAOS_LINES = {
+  roast: {
+    [TUNER_STATES.FLAT]: [
+      "{note} is so low it just got an invoice from the basement.",
+      "{note} dropped {cents}. That string is doing side quests underground.",
+      "Your {note} is emotionally below sea level. Character development required."
+    ],
+    [TUNER_STATES.TUNED]: [
+      "{note} is perfect, which is suspicious. Do not touch it.",
+      "{note} landed center panel. The guitar has briefly chosen peace.",
+      "Sensei reviewed {note} at {frequency} and found no crimes."
+    ],
+    [TUNER_STATES.SHARP]: [
+      "{note} is trying to leave the manga and become a laser beam.",
+      "{note} is {cents} spicy. Put the power level down.",
+      "That {note} has final-boss posture and first-episode judgment."
+    ],
+    default: [
+      "No clean note yet. The guitar is speaking in cursive.",
+      "Sensei needs one ringing string, not the entire band argument.",
+      "The note is currently in witness protection."
+    ]
+  },
+  excuse: [
+    "Official excuse: the room has villain energy.",
+    "Official excuse: the pick was emotionally unprepared.",
+    "Official excuse: the string saw the meter and got nervous.",
+    "Official excuse: temporary protagonist turbulence.",
+    "Official excuse: the guitar is doing method acting."
+  ],
+  victory: [
+    "DON! Screenshot this before the string changes its mind.",
+    "Perfect panel. Walk away like you meant to do that.",
+    "The tuning arc is complete. Roll opening credits.",
+    "That string is now legally allowed to wear sunglasses indoors.",
+    "Sensei stamp acquired. Proceed to unnecessary power chord."
+  ]
+};
+
+export function getChaosLine(action, context = {}) {
+  const note = context.note ?? "that string";
+  const cents = context.cents ?? "mystery cents";
+  const frequency = context.frequency ?? "unknown Hz";
+
+  const lines = action === "roast"
+    ? CHAOS_LINES.roast[context.state] ?? CHAOS_LINES.roast.default
+    : CHAOS_LINES[action] ?? CHAOS_LINES.roast.default;
+  const template = lines[Math.floor(Math.random() * lines.length)];
+
+  return template
+    .replaceAll("{note}", note)
+    .replaceAll("{cents}", cents)
+    .replaceAll("{frequency}", frequency);
 }
 
 export function renderMascot(state) {
