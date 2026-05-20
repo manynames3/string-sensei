@@ -46,7 +46,7 @@ button {
 .shell {
   width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 28px 0 44px;
+  padding: 14px 0 32px;
 }
 
 .hero {
@@ -55,15 +55,15 @@ button {
   grid-template-columns: 1fr auto;
   gap: 20px;
   align-items: end;
-  min-height: 180px;
-  padding: 18px 0 22px;
+  min-height: 120px;
+  padding: 8px 0 12px;
 }
 
 .hero::after {
   content: "DON!";
   position: absolute;
   right: 178px;
-  top: 24px;
+  top: 4px;
   color: rgba(17, 17, 17, 0.08);
   font-size: clamp(3.6rem, 8vw, 8rem);
   line-height: 0.8;
@@ -91,7 +91,7 @@ p {
 h1 {
   margin-bottom: 10px;
   max-width: 740px;
-  font-size: clamp(3rem, 9vw, 6.8rem);
+  font-size: clamp(2.4rem, 7vw, 5.2rem);
   line-height: 0.9;
   font-weight: 900;
   text-transform: uppercase;
@@ -102,9 +102,9 @@ h1 {
   max-width: 650px;
   margin-bottom: 0;
   color: var(--muted);
-  font-size: clamp(1rem, 2.2vw, 1.28rem);
-  line-height: 1.55;
-  font-weight: 600;
+  font-size: clamp(0.96rem, 1.8vw, 1.12rem);
+  line-height: 1.35;
+  font-weight: 700;
 }
 
 .hero-badge {
@@ -131,8 +131,8 @@ h1 {
 .tuner-app {
   position: relative;
   display: grid;
-  gap: 20px;
-  padding: clamp(16px, 3vw, 28px);
+  gap: 12px;
+  padding: clamp(10px, 2vw, 18px);
   border: 4px solid var(--ink);
   border-radius: 4px;
   background:
@@ -159,8 +159,8 @@ h1 {
 .trust-strip span {
   display: inline-flex;
   align-items: center;
-  min-height: 32px;
-  padding: 0 12px;
+  min-height: 28px;
+  padding: 0 10px;
   border: 2px solid var(--ink);
   border-radius: 999px;
   background: var(--surface);
@@ -172,11 +172,11 @@ h1 {
 .status-panel {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(180px, 280px) 1fr;
-  gap: clamp(16px, 4vw, 38px);
+  grid-template-columns: minmax(132px, 210px) 1fr;
+  gap: clamp(12px, 2.4vw, 24px);
   align-items: center;
-  min-height: 292px;
-  padding: clamp(18px, 3.4vw, 34px);
+  min-height: 0;
+  padding: clamp(12px, 2vw, 20px);
   border: 3px solid var(--line);
   border-radius: 2px;
   background:
@@ -190,10 +190,10 @@ h1 {
 .status-panel::after {
   content: "YOSHI!";
   position: absolute;
-  right: 20px;
-  bottom: 8px;
-  color: rgba(17, 17, 17, 0.08);
-  font-size: clamp(3rem, 7vw, 6.6rem);
+  right: 16px;
+  bottom: 4px;
+  color: rgba(17, 17, 17, 0.055);
+  font-size: clamp(2.4rem, 5vw, 5rem);
   font-weight: 900;
   line-height: 0.82;
   transform: rotate(-8deg);
@@ -232,7 +232,7 @@ h1 {
 
 .mascot-wrap {
   position: relative;
-  width: min(100%, 280px);
+  width: min(100%, 190px);
   aspect-ratio: 1;
   justify-self: center;
 }
@@ -396,8 +396,16 @@ h1 {
   animation: sweat 0.72s ease-in infinite;
 }
 
+.status-main,
 .status-copy {
   min-width: 0;
+}
+
+.status-main {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 10px;
 }
 
 .status-kicker {
@@ -410,8 +418,8 @@ h1 {
 }
 
 h2 {
-  margin-bottom: 12px;
-  font-size: clamp(2.35rem, 6vw, 5rem);
+  margin-bottom: 8px;
+  font-size: clamp(2rem, 4.8vw, 4rem);
   line-height: 0.95;
   font-weight: 900;
 }
@@ -420,33 +428,38 @@ h2 {
   max-width: 600px;
   margin-bottom: 0;
   color: var(--muted);
-  font-size: clamp(1rem, 2.2vw, 1.35rem);
-  line-height: 1.45;
+  font-size: clamp(0.98rem, 1.7vw, 1.16rem);
+  line-height: 1.34;
   font-weight: 700;
 }
 
 .readout-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-
-.readout {
-  min-height: 108px;
-  padding: 18px;
+  gap: 0;
   border: 3px solid var(--line);
   border-radius: 2px;
   background:
     radial-gradient(circle at 2px 2px, rgba(17, 17, 17, 0.08) 1px, transparent 1.4px) 0 0 / 12px 12px,
     var(--surface);
-  box-shadow: 4px 4px 0 rgba(17, 17, 17, 0.18);
+}
+
+.readout {
+  min-height: 62px;
+  padding: 10px 12px;
+  border: 0;
+  background: transparent;
+}
+
+.readout + .readout {
+  border-left: 2px solid var(--ink);
 }
 
 .label {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.68rem;
   font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -455,18 +468,18 @@ h2 {
 .readout strong {
   display: block;
   color: var(--ink);
-  font-size: clamp(1.4rem, 4vw, 2.35rem);
+  font-size: clamp(1.16rem, 2.6vw, 1.9rem);
   line-height: 1;
   font-weight: 900;
   overflow-wrap: anywhere;
 }
 
 .target-readout strong {
-  font-size: clamp(1.2rem, 3.1vw, 2rem);
+  font-size: clamp(1.05rem, 2vw, 1.55rem);
 }
 
 .meter {
-  padding: 18px;
+  padding: 10px 12px 8px;
   border: 3px solid var(--line);
   border-radius: 2px;
   background: var(--surface);
@@ -477,7 +490,7 @@ h2 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   font-weight: 900;
 }
 
@@ -494,8 +507,8 @@ h2 {
 
 .meter-track {
   position: relative;
-  height: 76px;
-  margin: 10px 0;
+  height: 58px;
+  margin: 6px 0;
   border: 3px solid var(--line);
   border-radius: 2px;
   background: #edf0f5;
@@ -541,11 +554,11 @@ h2 {
 
 .meter-needle {
   position: absolute;
-  top: 8px;
-  bottom: 8px;
+  top: 5px;
+  bottom: 5px;
   left: 50%;
-  width: 14px;
-  border-radius: 999px;
+  width: 18px;
+  border-radius: 2px;
   background: var(--ink);
   box-shadow: 0 4px 18px rgba(23, 25, 35, 0.28);
   transform: translateX(-50%);
@@ -565,7 +578,7 @@ h2 {
 .controls {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 12px;
+  gap: 10px;
   align-items: stretch;
 }
 
@@ -573,7 +586,7 @@ h2 {
 .secondary-button,
 .tone-button,
 .select-control {
-  min-height: 54px;
+  min-height: 48px;
   border-radius: 2px;
 }
 
@@ -590,13 +603,14 @@ h2 {
   padding: 0 24px;
   background: var(--ink);
   color: #ffffff;
+  border: 2px solid var(--ink);
   box-shadow: 5px 5px 0 var(--vermillion);
 }
 
 .secondary-button {
   grid-column: span 2;
   padding: 0 20px;
-  background: #f4efe3;
+  background: var(--gold);
   color: var(--ink);
   border: 2px solid var(--ink);
 }
@@ -626,6 +640,7 @@ h2 {
 }
 
 .select-control {
+  position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 12px;
@@ -633,6 +648,23 @@ h2 {
   padding: 0 14px;
   border: 3px solid var(--line);
   background: var(--surface);
+}
+
+.tuning-control,
+.string-control {
+  grid-template-columns: auto 1fr auto;
+}
+
+.tuning-control::after,
+.string-control::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid var(--vermillion);
+  transform: rotate(-8deg);
+  pointer-events: none;
 }
 
 .select-control span {
@@ -651,6 +683,7 @@ select {
   color: var(--ink);
   font-weight: 800;
   outline: none;
+  appearance: none;
 }
 
 input {
@@ -678,7 +711,7 @@ input:disabled {
   grid-template-columns: 1fr auto;
   gap: 16px;
   align-items: center;
-  padding: 18px;
+  padding: 12px;
   border: 3px solid var(--ink);
   border-radius: 2px;
   background:
@@ -753,8 +786,8 @@ details {
 }
 
 summary {
-  min-height: 52px;
-  padding: 16px;
+  min-height: 46px;
+  padding: 12px 14px;
   color: var(--ink);
   font-weight: 900;
   cursor: pointer;
@@ -801,7 +834,7 @@ h3 {
   place-items: center;
   padding: 10px;
   border: 2px solid var(--ink);
-  background: #f4efe3;
+  background: #fff8e7;
   color: var(--ink);
 }
 
@@ -875,11 +908,26 @@ summary:focus-visible {
   .hero {
     grid-template-columns: 1fr;
     min-height: auto;
+    padding-top: 6px;
+  }
+
+  .hero::after {
+    right: 8px;
+    top: 10px;
+    font-size: 3.4rem;
+  }
+
+  h1 {
+    margin-bottom: 6px;
+    font-size: clamp(2.55rem, 12vw, 4.4rem);
+  }
+
+  .tagline {
+    max-width: 92%;
   }
 
   .hero-badge {
-    grid-template-columns: repeat(6, 1fr);
-    min-width: 0;
+    display: none;
   }
 
   .status-panel {
@@ -888,18 +936,31 @@ summary:focus-visible {
   }
 
   .mascot-wrap {
-    width: min(78vw, 260px);
+    width: min(32vw, 120px);
   }
 
-  .readout-grid,
   .controls,
   .guided-panel,
   .help-grid {
     grid-template-columns: 1fr;
   }
 
+  .readout-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    text-align: left;
+  }
+
   .readout {
-    min-height: 92px;
+    min-height: 58px;
+    padding: 9px 8px;
+  }
+
+  .readout strong {
+    font-size: clamp(1rem, 4.8vw, 1.35rem);
+  }
+
+  .target-readout strong {
+    font-size: clamp(0.92rem, 3.8vw, 1.16rem);
   }
 
   .tone-buttons {
@@ -926,7 +987,11 @@ summary:focus-visible {
   }
 
   .status-panel {
-    padding: 14px;
+    padding: 10px;
+  }
+
+  .status-panel::after {
+    font-size: 2.6rem;
   }
 
   .hero-badge {
@@ -934,11 +999,11 @@ summary:focus-visible {
   }
 
   .meter {
-    padding: 12px;
+    padding: 8px;
   }
 
   .meter-track {
-    height: 64px;
+    height: 50px;
   }
 
   .tone-buttons {

@@ -1,5 +1,5 @@
-import { GUITAR_STRINGS, TUNING_PRESETS } from "./notes.js?v=6";
-import { TUNER_STATES } from "./tunerLogic.js?v=6";
+import { GUITAR_STRINGS, TUNING_PRESETS } from "./notes.js?v=8";
+import { TUNER_STATES } from "./tunerLogic.js?v=8";
 
 const MESSAGES = {
   [TUNER_STATES.FLAT]: [

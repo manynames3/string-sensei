@@ -12,7 +12,7 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./assets/icon.svg" />
-    <link rel="stylesheet" href="./src/styles.css?v=6" />
+    <link rel="stylesheet" href="./src/styles.css?v=8" />
   </head>
   <body>
     <main class="shell">
@@ -39,50 +39,52 @@
 
         <div class="status-panel" data-status="idle">
           <div class="mascot-wrap" id="mascot" aria-live="polite"></div>
-          <div class="status-copy">
-            <p class="status-kicker" id="status-kicker">Ready when you are</p>
-            <h2 id="status-title">Start Tuning</h2>
-            <p id="status-message">Tap the button, allow microphone access, and play one string at a time.</p>
-          </div>
-        </div>
+          <div class="status-main">
+            <div class="status-copy">
+              <p class="status-kicker" id="status-kicker">Ready when you are</p>
+              <h2 id="status-title">Start Tuning</h2>
+              <p id="status-message">Tap the button, allow microphone access, and play one string at a time.</p>
+            </div>
 
-        <div class="readout-grid" aria-label="Current tuning readout">
-          <div class="readout">
-            <span class="label">Detected</span>
-            <strong id="frequency">-- Hz</strong>
-          </div>
-          <div class="readout target-readout">
-            <span class="label">Target</span>
-            <strong id="target-note">Auto</strong>
-          </div>
-          <div class="readout">
-            <span class="label">Difference</span>
-            <strong id="cents">-- cents</strong>
-          </div>
-        </div>
+            <div class="readout-grid" aria-label="Current tuning readout">
+              <div class="readout">
+                <span class="label">Detected</span>
+                <strong id="frequency">-- Hz</strong>
+              </div>
+              <div class="readout target-readout">
+                <span class="label">Target</span>
+                <strong id="target-note">Auto</strong>
+              </div>
+              <div class="readout">
+                <span class="label">Difference</span>
+                <strong id="cents">-- cents</strong>
+              </div>
+            </div>
 
-        <div class="meter" aria-label="Tuning meter">
-          <div class="meter-labels" aria-hidden="true">
-            <span>Flat</span>
-            <span>Perfect</span>
-            <span>Sharp</span>
-          </div>
-          <div class="meter-track">
-            <div class="meter-zone meter-zone-flat"></div>
-            <div class="meter-zone meter-zone-perfect"></div>
-            <div class="meter-zone meter-zone-sharp"></div>
-            <div class="meter-center"></div>
-            <div class="meter-needle" id="meter-needle"></div>
-          </div>
-          <div class="meter-scale" aria-hidden="true">
-            <span>-50</span><span>-25</span><span>0</span><span>+25</span><span>+50</span>
+            <div class="meter" aria-label="Tuning meter">
+              <div class="meter-labels" aria-hidden="true">
+                <span>Flat</span>
+                <span>Perfect</span>
+                <span>Sharp</span>
+              </div>
+              <div class="meter-track">
+                <div class="meter-zone meter-zone-flat"></div>
+                <div class="meter-zone meter-zone-perfect"></div>
+                <div class="meter-zone meter-zone-sharp"></div>
+                <div class="meter-center"></div>
+                <div class="meter-needle" id="meter-needle"></div>
+              </div>
+              <div class="meter-scale" aria-hidden="true">
+                <span>-50</span><span>-25</span><span>0</span><span>+25</span><span>+50</span>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="controls">
           <button class="primary-button" id="start-button" type="button">Start Tuning</button>
           <button class="secondary-button" id="stop-button" type="button" hidden>Stop</button>
-          <button class="secondary-button" id="guided-button" type="button">Tune All 6</button>
+          <button class="secondary-button" id="guided-button" type="button">Guided Tune</button>
           <label class="select-control tuning-control" for="tuning-preset">
             <span>Tuning</span>
             <select id="tuning-preset"></select>
@@ -131,6 +133,6 @@
       </section>
     </main>
 
-    <script type="module" src="./src/app.js?v=6"></script>
+    <script type="module" src="./src/app.js?v=8"></script>
   </body>
 </html>

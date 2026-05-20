@@ -5,7 +5,7 @@ import {
   renderStringOptions,
   renderToneButtons,
   renderTuningOptions
-} from "./components.js?v=6";
+} from "./components.js?v=8";
 import {
   DEFAULT_CALIBRATION_HZ,
   formatCents,
@@ -13,9 +13,9 @@ import {
   getFrequencyRange,
   getTuningTargets,
   normalizeCalibration
-} from "./notes.js?v=6";
-import { detectPitchYin, PitchSmoother } from "./pitchDetection.js?v=6";
-import { clampCents, getTuningReading, TUNER_STATES } from "./tunerLogic.js?v=6";
+} from "./notes.js?v=8";
+import { detectPitchYin, PitchSmoother } from "./pitchDetection.js?v=8";
+import { clampCents, getTuningReading, TUNER_STATES } from "./tunerLogic.js?v=8";
 
 const PREFERENCES_KEY = "string-sensei-preferences";
 const GUIDED_LOCK_FRAMES = 22;
@@ -309,7 +309,7 @@ function stopGuidedMode() {
   state.guided.tunedFrames = 0;
   state.guided.completed = new Set();
   elements.guidedPanel.hidden = true;
-  elements.guidedButton.textContent = "Tune All 6";
+  elements.guidedButton.textContent = "Guided Tune";
   elements.stringMode.disabled = false;
   elements.tuningPreset.disabled = false;
   elements.calibration.disabled = false;
@@ -374,7 +374,7 @@ function updateGuidedPanel() {
 
 function finishGuidedMode() {
   state.guided.active = false;
-  elements.guidedButton.textContent = "Tune All 6";
+  elements.guidedButton.textContent = "Guided Tune";
   elements.stringMode.disabled = false;
   elements.tuningPreset.disabled = false;
   elements.calibration.disabled = false;
