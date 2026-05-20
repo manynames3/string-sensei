@@ -1,21 +1,21 @@
-import { GUITAR_STRINGS, TUNING_PRESETS } from "./notes.js?v=5";
-import { TUNER_STATES } from "./tunerLogic.js?v=5";
+import { GUITAR_STRINGS, TUNING_PRESETS } from "./notes.js?v=6";
+import { TUNER_STATES } from "./tunerLogic.js?v=6";
 
 const MESSAGES = {
   [TUNER_STATES.FLAT]: [
-    "Bro... your string is emotionally below sea level.",
-    "Tune up before the guitar starts crying.",
-    "That note has basement energy."
+    "Panel one: your string is dramatically slumping.",
+    "Tune up before the guitar monologues in the rain.",
+    "That note needs a training arc."
   ],
   [TUNER_STATES.TUNED]: [
-    "Perfect. The guitar gods approve.",
-    "Chef's kiss. That string is dialed in.",
-    "Certified delicious resonance."
+    "Perfect. Sensei stamps this panel approved.",
+    "Clean hit. That string landed center frame.",
+    "That resonance gets the victory sparkle."
   ],
   [TUNER_STATES.SHARP]: [
-    "Too spicy. Bring it down.",
-    "That string is trying to escape Earth's gravity.",
-    "Easy there, rocket string."
+    "Too much power. Bring it down.",
+    "That string just entered the final boss arc.",
+    "Dial it back before the speed lines take over."
   ],
   [TUNER_STATES.LISTENING]: [
     "Listening... give Sensei one clean string.",
@@ -102,14 +102,17 @@ export function renderMascot(state) {
     <svg class="mascot mascot-${mood}" viewBox="0 0 260 260" role="img" aria-label="Original anime-inspired tuner mascot">
       <defs>
         <radialGradient id="faceGlow" cx="45%" cy="35%" r="65%">
-          <stop offset="0%" stop-color="#fff7d8" />
-          <stop offset="62%" stop-color="#f9c07f" />
-          <stop offset="100%" stop-color="#dd7c60" />
+          <stop offset="0%" stop-color="#fffdf4" />
+          <stop offset="62%" stop-color="#f4ead8" />
+          <stop offset="100%" stop-color="#d9c7aa" />
         </radialGradient>
         <linearGradient id="hairInk" x1="0%" x2="100%">
-          <stop offset="0%" stop-color="#293a56" />
-          <stop offset="100%" stop-color="#111827" />
+          <stop offset="0%" stop-color="#2b2b2b" />
+          <stop offset="100%" stop-color="#050505" />
         </linearGradient>
+        <pattern id="screenTone" width="8" height="8" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="1.1" fill="#111111" opacity="0.26" />
+        </pattern>
       </defs>
       <g class="reaction-lines">
         <path d="M35 86 L12 67" />
@@ -130,6 +133,8 @@ export function renderMascot(state) {
         <path class="face" d="M72 116 C76 78 99 59 131 59 C164 59 186 79 190 116 C197 178 170 208 131 208 C91 208 64 178 72 116 Z" />
         <circle class="blush blush-left" cx="94" cy="149" r="12" />
         <circle class="blush blush-right" cx="168" cy="149" r="12" />
+        <circle class="tone-dot tone-dot-left" cx="94" cy="149" r="12" />
+        <circle class="tone-dot tone-dot-right" cx="168" cy="149" r="12" />
         <g class="eyes idle-eyes">
           <path d="M90 127 C98 119 109 119 117 127" />
           <path d="M145 127 C153 119 164 119 172 127" />

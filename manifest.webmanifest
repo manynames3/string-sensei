@@ -1,12 +1,12 @@
 {
   "name": "String Sensei Guitar Tuner",
   "short_name": "String Sensei",
-  "description": "A playful microphone-based guitar tuner with guided tuning and original mascot reactions.",
+  "description": "A manga-inspired microphone guitar tuner with guided tuning and original mascot reactions.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#fbfaf7",
-  "theme_color": "#171923",
+  "theme_color": "#111111",
   "icons": [
     {
       "src": "./assets/icon.svg",

@@ -1,6 +1,6 @@
 # String Sensei
 
-String Sensei is a browser-based guitar tuner with a real microphone pitch detector, clear tuning guidance, reference tones, and an original animated mascot.
+String Sensei is a manga-inspired browser guitar tuner with a real microphone pitch detector, clear tuning guidance, reference tones, and an original animated mascot.
 
 ## What It Does
 
