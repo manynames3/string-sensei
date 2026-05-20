@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="String Sensei is a playful microphone-based guitar tuner with original animated mascot reactions."
+    />
+    <meta name="theme-color" content="#171923" />
+    <title>String Sensei Guitar Tuner</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./assets/icon.svg" />
+    <link rel="stylesheet" href="./src/styles.css?v=5" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero" aria-labelledby="app-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Guitar tuner with feelings</p>
+          <h1 id="app-title">String Sensei</h1>
+          <p class="tagline">
+            A real microphone tuner that tells you when your string is flat,
+            perfect, or trying to flee the planet.
+          </p>
+        </div>
+        <div class="hero-badge" aria-label="Standard tuning strings">
+          <span>E2</span><span>A2</span><span>D3</span><span>G3</span><span>B3</span><span>E4</span>
+        </div>
+      </section>
+
+      <section class="tuner-app" aria-label="Guitar tuner">
+        <div class="trust-strip" aria-label="Product trust notes">
+          <span>Audio stays on your device</span>
+          <span>No account required</span>
+          <span>Secure browser tuning</span>
+        </div>
+
+        <div class="status-panel" data-status="idle">
+          <div class="mascot-wrap" id="mascot" aria-live="polite"></div>
+          <div class="status-copy">
+            <p class="status-kicker" id="status-kicker">Ready when you are</p>
+            <h2 id="status-title">Start Tuning</h2>
+            <p id="status-message">Tap the button, allow microphone access, and play one string at a time.</p>
+          </div>
+        </div>
+
+        <div class="readout-grid" aria-label="Current tuning readout">
+          <div class="readout">
+            <span class="label">Detected</span>
+            <strong id="frequency">-- Hz</strong>
+          </div>
+          <div class="readout target-readout">
+            <span class="label">Target</span>
+            <strong id="target-note">Auto</strong>
+          </div>
+          <div class="readout">
+            <span class="label">Difference</span>
+            <strong id="cents">-- cents</strong>
+          </div>
+        </div>
+
+        <div class="meter" aria-label="Tuning meter">
+          <div class="meter-labels" aria-hidden="true">
+            <span>Flat</span>
+            <span>Perfect</span>
+            <span>Sharp</span>
+          </div>
+          <div class="meter-track">
+            <div class="meter-zone meter-zone-flat"></div>
+            <div class="meter-zone meter-zone-perfect"></div>
+            <div class="meter-zone meter-zone-sharp"></div>
+            <div class="meter-center"></div>
+            <div class="meter-needle" id="meter-needle"></div>
+          </div>
+          <div class="meter-scale" aria-hidden="true">
+            <span>-50</span><span>-25</span><span>0</span><span>+25</span><span>+50</span>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="primary-button" id="start-button" type="button">Start Tuning</button>
+          <button class="secondary-button" id="stop-button" type="button" hidden>Stop</button>
+          <button class="secondary-button" id="guided-button" type="button">Tune All 6</button>
+          <label class="select-control tuning-control" for="tuning-preset">
+            <span>Tuning</span>
+            <select id="tuning-preset"></select>
+          </label>
+          <label class="select-control number-control calibration-control" for="calibration">
+            <span>A4</span>
+            <input id="calibration" type="number" min="430" max="450" step="0.1" value="440" inputmode="decimal" />
+          </label>
+          <label class="select-control string-control" for="string-mode">
+            <span>String</span>
+            <select id="string-mode"></select>
+          </label>
+        </div>
+
+        <div class="guided-panel" id="guided-panel" hidden>
+          <div>
+            <span class="label">Guided Check</span>
+            <strong id="guided-title">Tune one string at a time</strong>
+            <p id="guided-copy">String Sensei will lock each string when it holds steady inside +/-5 cents.</p>
+          </div>
+          <div class="guided-dots" id="guided-dots" aria-label="Guided tuning progress"></div>
+        </div>
+
+        <div class="reference-tones" aria-label="Reference tones">
+          <div class="section-heading">
+            <h3>Reference Tones</h3>
+            <p>Tap a string to hear the target pitch.</p>
+          </div>
+          <div class="tone-buttons" id="tone-buttons"></div>
+        </div>
+
+        <div class="help-grid">
+          <details>
+            <summary>Mic tips</summary>
+            <p>Use one ringing string, mute the others, keep the room quiet, and move the guitar closer if the app says the signal is too quiet.</p>
+          </details>
+          <details>
+            <summary>Privacy</summary>
+            <p>The microphone stream is analyzed in this browser tab. The app has no backend and does not upload or store raw audio.</p>
+          </details>
+          <details>
+            <summary>Accuracy notes</summary>
+            <p>Phone and laptop microphones vary. Use calibration when matching another tuner, piano, or rehearsal room reference.</p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./src/app.js?v=5"></script>
+  </body>
+</html>
