@@ -55,8 +55,8 @@ button {
   grid-template-columns: 1fr auto;
   gap: 20px;
   align-items: end;
-  min-height: 92px;
-  padding: 4px 0 10px;
+  min-height: 78px;
+  padding: 0 0 10px;
 }
 
 .hero::after {
@@ -70,15 +70,6 @@ button {
   font-weight: 900;
   transform: rotate(-9deg);
   pointer-events: none;
-}
-
-.eyebrow {
-  margin: 0 0 8px;
-  color: var(--vermillion);
-  font-size: 0.78rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 h1,

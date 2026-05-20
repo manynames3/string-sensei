@@ -1,4 +1,4 @@
-import { closestString, centsOff, getFrequencyRange } from "./notes.js?v=15";
+import { closestString, centsOff, getFrequencyRange } from "./notes.js?v=16";
 
 export const TUNER_STATES = {
   IDLE: "idle",
