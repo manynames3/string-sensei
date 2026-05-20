@@ -46,9 +46,9 @@ test("YIN detector rejects quiet input", () => {
 });
 
 test("YIN detector accepts quiet but realistic guitar signal", () => {
-  const detected = detectPitchYin(sineBuffer(110, 8192, 0.003), SAMPLE_RATE);
+  const detected = detectPitchYin(sineBuffer(110, 8192, 0.0008), SAMPLE_RATE);
   assert.equal(detected.reason, "pitch");
-  assert.ok(detected.rms < 0.004);
+  assert.ok(detected.rms < 0.001);
   assert.ok(Math.abs(detected.frequency - 110) < 0.08);
 });
 

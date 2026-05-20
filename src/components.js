@@ -1,5 +1,5 @@
-import { GUITAR_STRINGS, TUNING_PRESETS } from "./notes.js?v=12";
-import { TUNER_STATES } from "./tunerLogic.js?v=12";
+import { GUITAR_STRINGS, TUNING_PRESETS } from "./notes.js?v=13";
+import { TUNER_STATES } from "./tunerLogic.js?v=13";
 
 const MESSAGES = {
   [TUNER_STATES.FLAT]: [
@@ -23,8 +23,8 @@ const MESSAGES = {
     "Play a single string and let it ring."
   ],
   [TUNER_STATES.QUIET]: [
-    "Low signal, not silence. Sensei is leaning in.",
-    "Give it one confident pluck and let the note bloom."
+    "Listening for one clean ringing string.",
+    "Let the note ring for a beat so Sensei can lock on."
   ],
   [TUNER_STATES.NO_PITCH]: [
     "I hear sound, but not a clean note yet.",
@@ -48,7 +48,7 @@ const TITLES = {
   [TUNER_STATES.FLAT]: "Tune Up",
   [TUNER_STATES.TUNED]: "Perfect",
   [TUNER_STATES.SHARP]: "Tune Down",
-  [TUNER_STATES.QUIET]: "Play Louder",
+  [TUNER_STATES.QUIET]: "Listening...",
   [TUNER_STATES.NO_PITCH]: "Find the Note",
   [TUNER_STATES.OUT_OF_RANGE]: "Outside Range",
   [TUNER_STATES.ERROR]: "Mic Blocked"
@@ -60,7 +60,7 @@ const KICKERS = {
   [TUNER_STATES.FLAT]: "Flat",
   [TUNER_STATES.TUNED]: "In Tune",
   [TUNER_STATES.SHARP]: "Sharp",
-  [TUNER_STATES.QUIET]: "Low volume",
+  [TUNER_STATES.QUIET]: "Finding pitch",
   [TUNER_STATES.NO_PITCH]: "No stable pitch",
   [TUNER_STATES.OUT_OF_RANGE]: "Guitar range check",
   [TUNER_STATES.ERROR]: "Permission needed"

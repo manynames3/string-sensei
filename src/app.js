@@ -6,7 +6,7 @@ import {
   renderStringOptions,
   renderToneButtons,
   renderTuningOptions
-} from "./components.js?v=12";
+} from "./components.js?v=13";
 import {
   DEFAULT_CALIBRATION_HZ,
   formatCents,
@@ -14,15 +14,16 @@ import {
   getFrequencyRange,
   getTuningTargets,
   normalizeCalibration
-} from "./notes.js?v=12";
-import { detectPitchYin, PitchSmoother } from "./pitchDetection.js?v=12";
-import { clampCents, getTuningReading, TUNER_STATES } from "./tunerLogic.js?v=12";
+} from "./notes.js?v=13";
+import { detectPitchYin, PitchSmoother } from "./pitchDetection.js?v=13";
+import { clampCents, getTuningReading, TUNER_STATES } from "./tunerLogic.js?v=13";
 
 const PREFERENCES_KEY = "string-sensei-preferences";
 const GUIDED_LOCK_FRAMES = 22;
 const ANALYSER_FFT_SIZE = 8192;
-const PITCH_RMS_THRESHOLD = 0.0015;
-const PITCH_YIN_THRESHOLD = 0.18;
+const MIC_INPUT_BOOST = 8;
+const PITCH_RMS_THRESHOLD = 0.00008;
+const PITCH_YIN_THRESHOLD = 0.2;
 const PITCH_ANALYSIS_SIZE = 3072;
 const MISSED_PITCH_FRAMES_BEFORE_READING = 36;
 const MISSED_PITCH_FRAMES_AFTER_READING = 110;
@@ -57,6 +58,7 @@ const state = {
   analyser: null,
   stream: null,
   source: null,
+  inputGain: null,
   data: null,
   animationFrame: null,
   smoother: new PitchSmoother({ maxSamples: 6, maxJumpCents: 80 }),
@@ -153,12 +155,16 @@ async function startTuning() {
     analyser.smoothingTimeConstant = 0;
 
     const source = audioContext.createMediaStreamSource(stream);
-    source.connect(analyser);
+    const inputGain = audioContext.createGain();
+    inputGain.gain.value = MIC_INPUT_BOOST;
+    source.connect(inputGain);
+    inputGain.connect(analyser);
 
     state.audioContext = audioContext;
     state.analyser = analyser;
     state.stream = stream;
     state.source = source;
+    state.inputGain = inputGain;
     state.data = new Float32Array(analyser.fftSize);
     state.smoother.reset();
     state.stableMisses = 0;
@@ -201,7 +207,7 @@ function listen(timestamp = 0) {
     state.guided.tunedFrames = 0;
 
     // Guitar notes decay unevenly, especially through laptop and phone mics.
-    // Hold the last useful reading briefly instead of flashing to "Play Louder".
+    // Hold the last useful reading briefly instead of flashing a low-signal prompt.
     const missedPitchLimit = state.lastReading
       ? MISSED_PITCH_FRAMES_AFTER_READING
       : MISSED_PITCH_FRAMES_BEFORE_READING;
@@ -210,7 +216,9 @@ function listen(timestamp = 0) {
       state.smoother.reset();
       state.lastReading = null;
       state.stableMisses = 0;
-      const nextState = pitch.reason === "quiet" ? TUNER_STATES.QUIET : TUNER_STATES.NO_PITCH;
+      const nextState = pitch.reason === "quiet"
+        ? TUNER_STATES.LISTENING
+        : TUNER_STATES.NO_PITCH;
       setVisualState(nextState);
       resetReadouts();
     }
@@ -285,6 +293,7 @@ function stopTuning() {
   state.analyser = null;
   state.stream = null;
   state.source = null;
+  state.inputGain = null;
   state.data = null;
   state.animationFrame = null;
   state.smoother.reset();

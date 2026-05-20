@@ -42,10 +42,10 @@ export function calculateRms(buffer) {
 }
 
 export function detectPitchYin(buffer, sampleRate, options = {}) {
-  const threshold = options.threshold ?? 0.18;
+  const threshold = options.threshold ?? 0.2;
   const minFrequency = options.minFrequency ?? 65;
   const maxFrequency = options.maxFrequency ?? 380;
-  const rmsThreshold = options.rmsThreshold ?? 0.0015;
+  const rmsThreshold = options.rmsThreshold ?? 0.00008;
   const rms = calculateRms(buffer);
 
   if (rms < rmsThreshold) {
