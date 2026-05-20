@@ -5,7 +5,7 @@ import {
   renderStringOptions,
   renderToneButtons,
   renderTuningOptions
-} from "./components.js?v=8";
+} from "./components.js?v=9";
 import {
   DEFAULT_CALIBRATION_HZ,
   formatCents,
@@ -13,9 +13,9 @@ import {
   getFrequencyRange,
   getTuningTargets,
   normalizeCalibration
-} from "./notes.js?v=8";
-import { detectPitchYin, PitchSmoother } from "./pitchDetection.js?v=8";
-import { clampCents, getTuningReading, TUNER_STATES } from "./tunerLogic.js?v=8";
+} from "./notes.js?v=9";
+import { detectPitchYin, PitchSmoother } from "./pitchDetection.js?v=9";
+import { clampCents, getTuningReading, TUNER_STATES } from "./tunerLogic.js?v=9";
 
 const PREFERENCES_KEY = "string-sensei-preferences";
 const GUIDED_LOCK_FRAMES = 22;

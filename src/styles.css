@@ -55,8 +55,8 @@ button {
   grid-template-columns: 1fr auto;
   gap: 20px;
   align-items: end;
-  min-height: 120px;
-  padding: 8px 0 12px;
+  min-height: 92px;
+  padding: 4px 0 10px;
 }
 
 .hero::after {
@@ -89,22 +89,13 @@ p {
 }
 
 h1 {
-  margin-bottom: 10px;
+  margin-bottom: 0;
   max-width: 740px;
   font-size: clamp(2.4rem, 7vw, 5.2rem);
   line-height: 0.9;
   font-weight: 900;
   text-transform: uppercase;
   text-shadow: 4px 4px 0 rgba(214, 40, 29, 0.16);
-}
-
-.tagline {
-  max-width: 650px;
-  margin-bottom: 0;
-  color: var(--muted);
-  font-size: clamp(0.96rem, 1.8vw, 1.12rem);
-  line-height: 1.35;
-  font-weight: 700;
 }
 
 .hero-badge {
@@ -908,7 +899,7 @@ summary:focus-visible {
   .hero {
     grid-template-columns: 1fr;
     min-height: auto;
-    padding-top: 6px;
+    padding: 4px 0 8px;
   }
 
   .hero::after {
@@ -918,12 +909,8 @@ summary:focus-visible {
   }
 
   h1 {
-    margin-bottom: 6px;
+    margin-bottom: 0;
     font-size: clamp(2.55rem, 12vw, 4.4rem);
-  }
-
-  .tagline {
-    max-width: 92%;
   }
 
   .hero-badge {
