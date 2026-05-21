@@ -431,6 +431,7 @@ h2 {
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 10px;
   align-items: stretch;
+  padding: 0 5px 5px 0;
 }
 
 .primary-button,
@@ -446,6 +447,8 @@ h2 {
 .tone-button {
   border: 0;
   font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
   transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease;
 }
 
@@ -793,24 +796,24 @@ input:focus-visible {
 @media (max-width: 820px) {
   .shell {
     width: min(100% - 20px, 680px);
-    padding-top: 16px;
+    padding-top: 8px;
   }
 
   .hero {
     grid-template-columns: 1fr;
     min-height: auto;
-    padding: 4px 0 8px;
+    padding: 0 0 6px;
   }
 
   .hero::after {
     right: 8px;
-    top: 10px;
-    font-size: 3.4rem;
+    top: 6px;
+    font-size: 3rem;
   }
 
   h1 {
     margin-bottom: 0;
-    font-size: clamp(2.55rem, 12vw, 4.4rem);
+    font-size: clamp(2.35rem, 10.8vw, 4rem);
   }
 
   .hero-badge {
@@ -819,11 +822,37 @@ input:focus-visible {
 
   .status-panel {
     grid-template-columns: 1fr;
+    gap: 8px;
     text-align: center;
   }
 
   .mascot-wrap {
-    width: min(62vw, 250px);
+    width: min(54vw, 220px);
+  }
+
+  .status-panel[data-status="idle"] .mascot-wrap {
+    width: min(46vw, 180px);
+  }
+
+  .status-main {
+    gap: 8px;
+  }
+
+  .status-kicker {
+    margin-bottom: 5px;
+    font-size: 0.72rem;
+  }
+
+  h2 {
+    margin-bottom: 6px;
+    font-size: clamp(1.9rem, 8vw, 2.8rem);
+    line-height: 1;
+  }
+
+  #status-message {
+    font-size: clamp(0.92rem, 3.4vw, 1.02rem);
+    line-height: 1.25;
+    block-size: calc(2 * 1.25em);
   }
 
   .controls,
@@ -833,7 +862,7 @@ input:focus-visible {
 
   .controls > * {
     grid-column: 1 / -1;
-    width: 100%;
+    max-width: 100%;
   }
 
   .readout-grid {
@@ -842,8 +871,8 @@ input:focus-visible {
   }
 
   .readout {
-    min-height: 58px;
-    padding: 9px 8px;
+    min-height: 52px;
+    padding: 8px;
   }
 
   .readout strong {
@@ -852,6 +881,20 @@ input:focus-visible {
 
   .target-readout strong {
     font-size: clamp(0.92rem, 3.8vw, 1.16rem);
+  }
+
+  .meter {
+    padding: 8px;
+  }
+
+  .meter-track {
+    height: 48px;
+  }
+
+  .primary-button,
+  .secondary-button,
+  .select-control {
+    min-height: 44px;
   }
 
   .tone-buttons {
@@ -878,7 +921,7 @@ input:focus-visible {
   }
 
   .status-panel {
-    padding: 10px;
+    padding: 8px;
   }
 
   .status-panel::after {
@@ -889,12 +932,8 @@ input:focus-visible {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .meter {
-    padding: 8px;
-  }
-
   .meter-track {
-    height: 50px;
+    height: 44px;
   }
 
   .tone-buttons {

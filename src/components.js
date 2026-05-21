@@ -1,5 +1,5 @@
-import { GUITAR_STRINGS, TUNING_PRESETS } from "./notes.js?v=31";
-import { TUNER_STATES } from "./tunerLogic.js?v=31";
+import { GUITAR_STRINGS, TUNING_PRESETS } from "./notes.js?v=33";
+import { TUNER_STATES } from "./tunerLogic.js?v=33";
 
 const MESSAGES = {
   [TUNER_STATES.FLAT]: [
@@ -138,19 +138,19 @@ let lastChaosTemplate = "";
 
 const MASCOT_ASSETS = {
   idle: {
-    src: "./assets/mascots/sensei-waiting-v1.png?v=31",
+    src: "./assets/mascots/sensei-waiting-v1.png?v=33",
     label: "Painted chibi sensei waiting with tea and clock"
   },
   sad: {
-    src: "./assets/mascots/sensei-flat-v1.png?v=31",
+    src: "./assets/mascots/sensei-flat-v1.png?v=33",
     label: "Painted chibi sensei frustrated because the guitar string is flat"
   },
   happy: {
-    src: "./assets/mascots/sensei-tuned-v1.png?v=31",
+    src: "./assets/mascots/sensei-tuned-v1.png?v=33",
     label: "Painted chibi sensei celebrating a perfectly tuned string"
   },
   panic: {
-    src: "./assets/mascots/sensei-sharp-v1.png?v=31",
+    src: "./assets/mascots/sensei-sharp-v1.png?v=33",
     label: "Painted chibi sensei panicking because the guitar string is sharp"
   }
 };
