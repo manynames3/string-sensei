@@ -1,17 +1,20 @@
-const CACHE_NAME = "string-sensei-v18";
+const CACHE_NAME = "string-sensei-v27";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./assets/icon.svg",
   "./assets/icon-maskable.svg",
-  "./assets/sensei-shojo-panel-preview.png?v=18",
-  "./src/app.js?v=18",
-  "./src/components.js?v=18",
-  "./src/notes.js?v=18",
-  "./src/pitchDetection.js?v=18",
-  "./src/tunerLogic.js?v=18",
-  "./src/styles.css?v=18"
+  "./assets/mascots/sensei-flat-v1.png?v=27",
+  "./assets/mascots/sensei-sharp-v1.png?v=27",
+  "./assets/mascots/sensei-tuned-v1.png?v=27",
+  "./assets/mascots/sensei-waiting-v1.png?v=27",
+  "./src/app.js?v=27",
+  "./src/components.js?v=27",
+  "./src/notes.js?v=27",
+  "./src/pitchDetection.js?v=27",
+  "./src/tunerLogic.js?v=27",
+  "./src/styles.css?v=27"
 ];
 
 self.addEventListener("install", (event) => {

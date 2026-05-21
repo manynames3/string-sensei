@@ -135,7 +135,7 @@ h1 {
 .status-panel {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(260px, 42%) 1fr;
+  grid-template-columns: minmax(190px, 280px) 1fr;
   gap: clamp(12px, 2.4vw, 24px);
   align-items: center;
   min-height: 0;
@@ -195,174 +195,51 @@ h1 {
 
 .mascot-wrap {
   position: relative;
-  width: min(100%, 420px);
-  aspect-ratio: 3 / 2;
+  width: min(100%, 280px);
+  aspect-ratio: 1;
   justify-self: center;
-  border: 4px solid var(--ink);
-  border-radius: 3px;
-  background:
-    url("../assets/sensei-shojo-panel-preview.png?v=18") center / cover no-repeat,
-    var(--paper);
-  box-shadow: 7px 7px 0 rgba(17, 17, 17, 0.18);
-  overflow: hidden;
 }
 
 .mascot {
-  display: none;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
-.hood {
-  fill: #f5efe2;
-  stroke: var(--ink);
-  stroke-width: 4;
-}
-
-.hair,
-.bang {
-  fill: url("#hairInk");
-}
-
-.face {
-  fill: url("#faceGlow");
-  stroke: var(--ink);
-  stroke-width: 6;
-}
-
-.blush {
-  fill: rgba(214, 40, 29, 0.18);
-}
-
-.tone-dot {
-  fill: url("#screenTone");
-  opacity: 0.95;
-}
-
-.eyes,
-.mouth,
-.reaction-lines {
-  fill: none;
-  stroke: var(--ink);
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.eyes {
-  stroke-width: 7;
-}
-
-.mouth {
-  stroke-width: 6;
-}
-
-.happy-mouth {
-  fill: #982a3b;
-}
-
-.panic-mouth {
-  fill: var(--ink);
-  stroke-width: 4;
-}
-
-.pupil {
-  fill: #ffffff;
-  stroke: none;
-}
-
-.sparkles {
-  fill: var(--vermillion);
-  opacity: 0;
-}
-
-.reaction-lines {
-  stroke-width: 7;
-  opacity: 0;
-}
-
-.tear-drops,
-.sweat-drops {
-  fill: #58a9ff;
-  opacity: 0;
-}
-
-.arm {
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 12;
-  stroke-linecap: round;
-}
-
-.thumb {
-  fill: #f5b074;
-  stroke: var(--ink);
-  stroke-width: 5;
-}
-
-.idle-eyes,
-.idle-mouth,
-.happy-eyes,
-.happy-mouth,
-.sad-eyes,
-.sad-mouth,
-.panic-eyes,
-.panic-mouth,
-.tear-drops,
-.sweat-drops,
-.thumb-arm {
-  display: none;
-}
-
-.mascot-idle .idle-eyes,
-.mascot-idle .idle-mouth,
-.mascot-happy .happy-eyes,
-.mascot-happy .happy-mouth,
-.mascot-happy .thumb-arm,
-.mascot-sad .sad-eyes,
-.mascot-sad .sad-mouth,
-.mascot-sad .tear-drops,
-.mascot-panic .panic-eyes,
-.mascot-panic .panic-mouth,
-.mascot-panic .sweat-drops {
+.painted-mascot {
   display: block;
+  margin: 0;
+  transform-origin: center;
 }
 
-.mascot-idle .mascot-body {
-  animation: float 2.8s ease-in-out infinite;
+.mascot-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  background: var(--paper);
+  box-shadow: 7px 7px 0 rgba(17, 17, 17, 0.2);
+  object-fit: cover;
+  user-select: none;
 }
 
-.mascot-sad .mascot-body {
-  animation: droop 1.6s ease-in-out infinite;
+.mascot-idle .mascot-image {
+  animation: paintedFloat 2.8s ease-in-out infinite;
 }
 
-.mascot-sad .tear-drops {
-  animation: tears 1.1s ease-in infinite;
+.mascot-sad .mascot-image {
+  animation: paintedFlat 0.58s ease-in-out infinite;
 }
 
-.mascot-happy .mascot-body {
-  animation: bounce 1.2s ease-in-out infinite;
+.mascot-happy .mascot-image {
+  animation: paintedVictory 0.9s cubic-bezier(0.32, 0.72, 0.2, 1) infinite;
 }
 
-.mascot-happy .sparkles {
-  opacity: 1;
-  animation: twinkle 1.4s ease-in-out infinite;
+.mascot-panic .mascot-image {
+  animation: paintedPanic 0.14s linear infinite;
 }
 
-.mascot-happy .thumb-arm {
-  transform-origin: 198px 174px;
-  animation: thumbs 1s ease-in-out infinite;
-}
-
-.mascot-panic .mascot-body {
-  animation: panicShake 0.16s linear infinite;
-}
-
-.mascot-panic .reaction-lines,
-.mascot-panic .sweat-drops {
-  opacity: 1;
-}
-
-.mascot-panic .sweat-drops {
-  animation: sweat 0.72s ease-in infinite;
-}
 
 .status-main,
 .status-copy {
@@ -558,7 +435,6 @@ h2 {
 
 .primary-button,
 .secondary-button,
-.chaos-button,
 .tone-button,
 .select-control {
   min-height: 48px;
@@ -567,7 +443,6 @@ h2 {
 
 .primary-button,
 .secondary-button,
-.chaos-button,
 .tone-button {
   border: 0;
   font-weight: 900;
@@ -605,7 +480,6 @@ h2 {
 
 .primary-button:hover,
 .secondary-button:hover,
-.chaos-button:hover,
 .tone-button:hover {
   transform: translateY(-1px);
 }
@@ -806,31 +680,6 @@ h3 {
     #fffdf7;
 }
 
-.chaos-actions {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.chaos-button {
-  padding: 0 16px;
-  border: 2px solid var(--ink);
-  background: var(--ink);
-  color: #ffffff;
-  box-shadow: 4px 4px 0 var(--gold);
-}
-
-.chaos-button:nth-child(2) {
-  background: var(--vermillion);
-  box-shadow-color: var(--ink);
-}
-
-.chaos-button:nth-child(3) {
-  background: var(--gold);
-  color: var(--ink);
-  box-shadow-color: var(--vermillion);
-}
-
 .chaos-output {
   position: relative;
   margin: 0;
@@ -845,7 +694,7 @@ h3 {
 }
 
 .chaos-output::before {
-  content: "BONUS PANEL";
+  content: "RANDOM PANEL";
   display: block;
   margin-bottom: 4px;
   color: var(--muted);
@@ -880,49 +729,52 @@ input:focus-visible {
   outline-offset: 3px;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-7px); }
+
+
+
+
+@keyframes paintedFloat {
+  0%, 100% { transform: translateY(0) rotate(-0.4deg); }
+  50% { transform: translateY(-7px) rotate(0.4deg); }
 }
 
-@keyframes droop {
-  0%, 100% { transform: translateY(5px) rotate(-1deg); }
-  50% { transform: translateY(12px) rotate(1deg); }
+@keyframes paintedFlat {
+  0%, 100% { transform: translate(0, 0) rotate(-1.1deg); }
+  45% { transform: translate(-3px, 4px) rotate(1.1deg); }
+  70% { transform: translate(2px, -2px) rotate(-0.6deg); }
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0) scale(1); }
-  45% { transform: translateY(-13px) scale(1.03); }
-  70% { transform: translateY(2px) scale(0.99); }
+@keyframes paintedVictory {
+  0%, 100% { transform: translateY(2px) rotate(-1deg) scale(1); }
+  45% { transform: translateY(-15px) rotate(2deg) scale(1.035); }
+  72% { transform: translateY(1px) rotate(-0.6deg) scale(0.995); }
 }
 
-@keyframes panicShake {
-  0% { transform: translate(-3px, 1px) rotate(-1deg); }
-  50% { transform: translate(3px, -1px) rotate(1deg); }
-  100% { transform: translate(-2px, 2px) rotate(-1deg); }
+@keyframes paintedPanic {
+  0% { transform: translate(-4px, 1px) rotate(-1.2deg); }
+  50% { transform: translate(4px, -1px) rotate(1.2deg); }
+  100% { transform: translate(-2px, 2px) rotate(-0.8deg); }
 }
 
-@keyframes tears {
-  0% { transform: translateY(-4px); opacity: 0; }
-  30%, 70% { opacity: 1; }
-  100% { transform: translateY(20px); opacity: 0; }
-}
 
-@keyframes sweat {
-  0% { transform: translateY(-2px); opacity: 0; }
-  25%, 75% { opacity: 1; }
-  100% { transform: translateY(12px); opacity: 0; }
-}
 
-@keyframes twinkle {
-  0%, 100% { transform: scale(0.85); opacity: 0.55; }
-  50% { transform: scale(1.08); opacity: 1; }
-}
 
-@keyframes thumbs {
-  0%, 100% { transform: rotate(-5deg); }
-  50% { transform: rotate(8deg); }
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @keyframes chaosPop {
   0% { transform: scale(0.98) rotate(-0.5deg); }
@@ -962,8 +814,7 @@ input:focus-visible {
   }
 
   .mascot-wrap {
-    width: 100%;
-    max-width: 520px;
+    width: min(62vw, 250px);
   }
 
   .controls,
@@ -1000,10 +851,6 @@ input:focus-visible {
 
   .section-heading {
     display: grid;
-  }
-
-  .chaos-actions {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .guided-dots {
