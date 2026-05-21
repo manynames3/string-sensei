@@ -1,20 +1,20 @@
-const CACHE_NAME = "string-sensei-v27";
+const CACHE_NAME = "string-sensei-v28";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./assets/icon.svg",
   "./assets/icon-maskable.svg",
-  "./assets/mascots/sensei-flat-v1.png?v=27",
-  "./assets/mascots/sensei-sharp-v1.png?v=27",
-  "./assets/mascots/sensei-tuned-v1.png?v=27",
-  "./assets/mascots/sensei-waiting-v1.png?v=27",
-  "./src/app.js?v=27",
-  "./src/components.js?v=27",
-  "./src/notes.js?v=27",
-  "./src/pitchDetection.js?v=27",
-  "./src/tunerLogic.js?v=27",
-  "./src/styles.css?v=27"
+  "./assets/mascots/sensei-flat-v1.png?v=28",
+  "./assets/mascots/sensei-sharp-v1.png?v=28",
+  "./assets/mascots/sensei-tuned-v1.png?v=28",
+  "./assets/mascots/sensei-waiting-v1.png?v=28",
+  "./src/app.js?v=28",
+  "./src/components.js?v=28",
+  "./src/notes.js?v=28",
+  "./src/pitchDetection.js?v=28",
+  "./src/tunerLogic.js?v=28",
+  "./src/styles.css?v=28"
 ];
 
 self.addEventListener("install", (event) => {
@@ -35,6 +35,23 @@ self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   const requestUrl = new URL(event.request.url);
   if (requestUrl.origin !== self.location.origin) return;
+
+  const acceptsHtml = event.request.headers.get("accept")?.includes("text/html");
+  const isPageRequest = event.request.mode === "navigate" || acceptsHtml;
+
+  if (isPageRequest) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (!response || response.status !== 200 || response.type !== "basic") return response;
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          return response;
+        })
+        .catch(() => caches.match(event.request).then((cached) => cached ?? caches.match("./index.html")))
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then((cached) => cached ?? fetch(event.request)
