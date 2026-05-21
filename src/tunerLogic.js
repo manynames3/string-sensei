@@ -1,4 +1,4 @@
-import { closestString, centsOff, getFrequencyRange } from "./notes.js?v=35";
+import { closestString, centsOff, getFrequencyRange } from "./notes.js?v=36";
 
 export const METER_RANGE_CENTS = 15;
 
