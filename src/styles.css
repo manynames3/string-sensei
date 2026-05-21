@@ -333,7 +333,10 @@ h2 {
   padding: 10px 12px 8px;
   border: 3px solid var(--line);
   border-radius: 2px;
-  background: var(--surface);
+  background:
+    radial-gradient(circle at 2px 2px, rgba(17, 17, 17, 0.09) 1px, transparent 1.4px) 0 0 / 10px 10px,
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 248, 231, 0.9)),
+    var(--surface);
 }
 
 .meter-labels,
@@ -345,73 +348,128 @@ h2 {
   font-weight: 900;
 }
 
+.meter-labels span:first-child,
+.meter-scale span:nth-child(1),
+.meter-scale span:nth-child(2) {
+  color: var(--flat);
+}
+
 .meter-labels span:nth-child(2),
 .meter-scale span:nth-child(3) {
+  color: var(--tuned);
   text-align: center;
 }
 
 .meter-labels span:nth-child(3),
 .meter-scale span:nth-child(4),
 .meter-scale span:nth-child(5) {
+  color: var(--sharp);
   text-align: right;
 }
 
 .meter-track {
+  isolation: isolate;
   position: relative;
   height: 58px;
   margin: 6px 0;
   border: 3px solid var(--line);
   border-radius: 2px;
-  background: #edf0f5;
+  background: var(--ink);
   overflow: hidden;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.32),
+    inset 0 0 24px rgba(17, 17, 17, 0.35);
+}
+
+.meter-track::before,
+.meter-track::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.meter-track::before {
+  z-index: 3;
+  inset: 0;
+  background:
+    radial-gradient(circle at 2px 2px, rgba(17, 17, 17, 0.18) 1px, transparent 1.45px) 0 0 / 10px 10px,
+    repeating-linear-gradient(115deg, transparent 0 12px, rgba(255, 255, 255, 0.24) 12px 14px, transparent 14px 26px);
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+}
+
+.meter-track::after {
+  z-index: 4;
+  top: 0;
+  bottom: 0;
+  left: 33.333%;
+  width: 33.334%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 253, 208, 0.85), rgba(231, 184, 61, 0.18) 42%, transparent 64%);
+  opacity: 0.8;
+  animation: perfectPulse 1.4s ease-in-out infinite;
 }
 
 .meter-zone {
   position: absolute;
   inset-block: 0;
+  z-index: 1;
 }
 
 .meter-zone-flat {
   left: 0;
   width: 33.333%;
   background:
-    radial-gradient(circle at 2px 2px, rgba(17, 17, 17, 0.16) 1px, transparent 1.4px) 0 0 / 9px 9px,
-    linear-gradient(90deg, rgba(51, 92, 200, 0.65), rgba(51, 92, 200, 0.12));
+    linear-gradient(90deg, rgba(17, 17, 17, 0.28), transparent 42%),
+    linear-gradient(90deg, #3159d4, #76a7ff);
 }
 
 .meter-zone-perfect {
   left: 33.333%;
   width: 33.334%;
-  background: rgba(23, 125, 88, 0.78);
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0 8px, transparent 8px 18px),
+    linear-gradient(90deg, #20986d, #f1c447 42%, #f1c447 58%, #20986d);
 }
 
 .meter-zone-sharp {
   right: 0;
   width: 33.333%;
   background:
-    repeating-linear-gradient(110deg, rgba(17, 17, 17, 0.12) 0 2px, transparent 2px 12px),
-    linear-gradient(90deg, rgba(214, 40, 29, 0.12), rgba(214, 40, 29, 0.72));
+    linear-gradient(90deg, transparent, rgba(17, 17, 17, 0.25) 66%),
+    linear-gradient(90deg, #ff8a70, #d6281d);
 }
 
 .meter-center {
   position: absolute;
+  z-index: 5;
   top: 0;
   bottom: 0;
   left: 50%;
-  width: 4px;
-  background: var(--ink);
+  width: 7px;
+  background: var(--gold);
+  box-shadow:
+    -10px 0 0 rgba(23, 125, 88, 0.42),
+    10px 0 0 rgba(23, 125, 88, 0.42),
+    0 0 18px rgba(231, 184, 61, 0.85);
   transform: translateX(-50%);
 }
 
 .meter-needle {
   position: absolute;
+  z-index: 6;
   top: 5px;
   bottom: 5px;
   left: 50%;
-  width: 18px;
+  width: 20px;
   border-radius: 2px;
-  background: var(--ink);
-  box-shadow: 0 4px 18px rgba(23, 25, 35, 0.28);
+  border: 2px solid rgba(255, 253, 208, 0.32);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.22), transparent 42%),
+    var(--ink);
+  box-shadow:
+    0 4px 18px rgba(23, 25, 35, 0.38),
+    4px 0 0 rgba(214, 40, 29, 0.6);
   transform: translateX(-50%);
   transition: left 140ms ease-out;
 }
@@ -766,6 +824,11 @@ input:focus-visible {
   0% { transform: translate(-4px, 1px) rotate(-1.2deg); }
   50% { transform: translate(4px, -1px) rotate(1.2deg); }
   100% { transform: translate(-2px, 2px) rotate(-0.8deg); }
+}
+
+@keyframes perfectPulse {
+  0%, 100% { opacity: 0.45; transform: scaleX(0.86); }
+  50% { opacity: 0.9; transform: scaleX(1); }
 }
 
 
