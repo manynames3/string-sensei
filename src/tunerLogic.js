@@ -1,4 +1,6 @@
-import { closestString, centsOff, getFrequencyRange } from "./notes.js?v=30";
+import { closestString, centsOff, getFrequencyRange } from "./notes.js?v=31";
+
+export const METER_RANGE_CENTS = 15;
 
 export const TUNER_STATES = {
   IDLE: "idle",
@@ -41,7 +43,12 @@ export function getTuningReading(frequency, options) {
   return { state: TUNER_STATES.TUNED, frequency, target, cents, instruction: "Perfect" };
 }
 
-export function clampCents(cents, max = 50) {
+export function clampCents(cents, max = METER_RANGE_CENTS) {
   if (!Number.isFinite(cents)) return 0;
   return Math.max(-max, Math.min(max, cents));
+}
+
+export function centsToMeterPercent(cents, max = METER_RANGE_CENTS) {
+  if (!Number.isFinite(cents)) return 50;
+  return 50 + (clampCents(cents, max) / max) * 50;
 }

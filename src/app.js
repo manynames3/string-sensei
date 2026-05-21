@@ -6,7 +6,7 @@ import {
   renderStringOptions,
   renderToneButtons,
   renderTuningOptions
-} from "./components.js?v=30";
+} from "./components.js?v=31";
 import {
   DEFAULT_CALIBRATION_HZ,
   formatCents,
@@ -14,9 +14,9 @@ import {
   getFrequencyRange,
   getTuningTargets,
   normalizeCalibration
-} from "./notes.js?v=30";
-import { detectPitchYin, PitchSmoother } from "./pitchDetection.js?v=30";
-import { clampCents, getTuningReading, TUNER_STATES } from "./tunerLogic.js?v=30";
+} from "./notes.js?v=31";
+import { detectPitchYin, PitchSmoother } from "./pitchDetection.js?v=31";
+import { centsToMeterPercent, getTuningReading, TUNER_STATES } from "./tunerLogic.js?v=31";
 
 const PREFERENCES_KEY = "string-sensei-preferences";
 const GUIDED_LOCK_FRAMES = 22;
@@ -252,8 +252,7 @@ function updateFromReading(reading) {
 
   if (Number.isFinite(reading.cents)) {
     elements.cents.textContent = formatCents(reading.cents);
-    const clamped = clampCents(reading.cents);
-    elements.needle.style.left = `${50 + clamped}%`;
+    elements.needle.style.left = `${centsToMeterPercent(reading.cents)}%`;
     elements.needle.setAttribute("aria-label", `${formatCents(reading.cents)} from ${reading.target.id}`);
   } else {
     elements.cents.textContent = "-- cents";
