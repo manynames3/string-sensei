@@ -722,6 +722,15 @@ h3 {
   animation: chaosPop 180ms ease-out;
 }
 
+.legal-footer {
+  margin-top: 14px;
+  color: rgba(17, 17, 17, 0.64);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
 button:focus-visible,
 select:focus-visible,
 input:focus-visible {

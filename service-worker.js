@@ -1,20 +1,23 @@
-const CACHE_NAME = "string-sensei-v28";
+const CACHE_NAME = "string-sensei-v30";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./manifest.webmanifest",
-  "./assets/icon.svg",
-  "./assets/icon-maskable.svg",
-  "./assets/mascots/sensei-flat-v1.png?v=28",
-  "./assets/mascots/sensei-sharp-v1.png?v=28",
-  "./assets/mascots/sensei-tuned-v1.png?v=28",
-  "./assets/mascots/sensei-waiting-v1.png?v=28",
-  "./src/app.js?v=28",
-  "./src/components.js?v=28",
-  "./src/notes.js?v=28",
-  "./src/pitchDetection.js?v=28",
-  "./src/tunerLogic.js?v=28",
-  "./src/styles.css?v=28"
+  "./manifest.webmanifest?v=30",
+  "./assets/favicon-sensei-64.png?v=30",
+  "./assets/icon-sensei-192.png?v=30",
+  "./assets/icon-sensei-512.png?v=30",
+  "./assets/icon-sensei-maskable-192.png?v=30",
+  "./assets/icon-sensei-maskable-512.png?v=30",
+  "./assets/mascots/sensei-flat-v1.png?v=30",
+  "./assets/mascots/sensei-sharp-v1.png?v=30",
+  "./assets/mascots/sensei-tuned-v1.png?v=30",
+  "./assets/mascots/sensei-waiting-v1.png?v=30",
+  "./src/app.js?v=30",
+  "./src/components.js?v=30",
+  "./src/notes.js?v=30",
+  "./src/pitchDetection.js?v=30",
+  "./src/tunerLogic.js?v=30",
+  "./src/styles.css?v=30"
 ];
 
 self.addEventListener("install", (event) => {
