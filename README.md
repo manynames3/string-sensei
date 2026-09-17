@@ -1,6 +1,12 @@
 # String Sensei
 
-String Sensei is a manga-inspired browser guitar tuner with a real microphone pitch detector, clear tuning guidance, reference tones, and an original animated mascot.
+String Sensei is a manga-inspired browser and Android guitar tuner with a real microphone pitch detector, clear tuning guidance, reference tones, and an original animated mascot.
+
+## Tech Stack
+
+- Browser app: HTML, CSS, JavaScript, Web Audio API, YIN-style pitch detection, and a versioned service worker for PWA caching.
+- Android app: Java, Android SDK, Gradle, and a secure local WebView shell with native microphone permission handling.
+- Testing: Node.js built-in test runner with generated pitch fixtures.
 
 ## What It Does
 
