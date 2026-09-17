@@ -34,6 +34,17 @@ npm test
 
 The tests cover note frequency generation, tuning thresholds, alternate tuning target selection, and generated sine-wave pitch detection fixtures.
 
+## Android App
+
+The `android/` directory contains a native Android shell that packages the same tuner UI and local Web Audio/YIN detector for offline use. It requests microphone permission through Android and keeps audio analysis on-device.
+
+```bash
+cd android
+./gradlew assembleDebug
+```
+
+The debug APK is written to `android/app/build/outputs/apk/debug/app-debug.apk`.
+
 ## Deploy
 
 This is a static app. Deploy the repository root to Netlify, Vercel, GitHub Pages, Cloudflare Pages, or any static host.

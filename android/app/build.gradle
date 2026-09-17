@@ -1,0 +1,50 @@
+plugins {
+    id "com.android.application"
+}
+
+def webRoot = rootProject.projectDir.parentFile
+def generatedWebAssets = layout.buildDirectory.dir("generated/web-assets")
+
+tasks.register("syncWebAppAssets", Sync) {
+    from(webRoot) {
+        include "index.html"
+        include "manifest.webmanifest"
+        include "service-worker.js"
+        include "assets/**"
+        include "src/**"
+    }
+    into(generatedWebAssets)
+}
+
+android {
+    namespace "com.supremeaiventures.stringsensei"
+    compileSdk 36
+
+    defaultConfig {
+        applicationId "com.supremeaiventures.stringsensei"
+        minSdk 23
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+
+    sourceSets {
+        main {
+            assets.srcDir(generatedWebAssets)
+        }
+    }
+}
+
+preBuild.dependsOn(tasks.named("syncWebAppAssets"))
