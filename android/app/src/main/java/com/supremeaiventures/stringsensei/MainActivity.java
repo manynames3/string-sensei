@@ -4,11 +4,17 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Build;
 import android.os.Message;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
+import android.view.WindowManager;
+import android.provider.Settings;
+import android.webkit.JavascriptInterface;
 import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -16,9 +22,12 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 public final class MainActivity extends Activity {
@@ -28,6 +37,7 @@ public final class MainActivity extends Activity {
 
     private WebView webView;
     private PermissionRequest pendingPermissionRequest;
+    private boolean tuningActive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +46,31 @@ public final class MainActivity extends Activity {
         getWindow().setNavigationBarColor(Color.rgb(17, 17, 17));
 
         webView = new WebView(this);
+        WebView.setWebContentsDebuggingEnabled((getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
         webView.setBackgroundColor(Color.rgb(17, 17, 17));
         configureWebView(webView);
-        setContentView(webView, new ViewGroup.LayoutParams(
+        FrameLayout container = new FrameLayout(this);
+        container.setBackgroundColor(Color.rgb(17, 17, 17));
+        container.addView(webView, new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
         ));
+        setContentView(container);
+        container.setOnApplyWindowInsetsListener((view, insets) -> {
+            if (Build.VERSION.SDK_INT >= 30) {
+                android.graphics.Insets bars = insets.getInsets(
+                        WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout() | WindowInsets.Type.ime());
+                view.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+            } else {
+                view.setPadding(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(),
+                        insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom());
+            }
+            return insets;
+        });
+        container.requestApplyInsets();
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null || webView.restoreState(savedInstanceState) == null) {
             webView.loadUrl(APP_URL);
-        } else {
-            webView.restoreState(savedInstanceState);
         }
     }
 
@@ -57,10 +81,11 @@ public final class MainActivity extends Activity {
         settings.setMediaPlaybackRequiresUserGesture(false);
         settings.setAllowFileAccess(false);
         settings.setAllowContentAccess(false);
-        settings.setBuiltInZoomControls(false);
+        settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false);
-        settings.setSupportZoom(false);
-        settings.setTextZoom(100);
+        settings.setSupportZoom(true);
+        settings.setTextZoom(Math.round(100 * getResources().getConfiguration().fontScale));
+        view.addJavascriptInterface(new AppBridge(), "StringSenseiAndroid");
 
         view.setWebViewClient(new LocalAppWebViewClient());
         view.setWebChromeClient(new AppChromeClient());
@@ -85,6 +110,7 @@ public final class MainActivity extends Activity {
             }
         }
 
+        if (pendingPermissionRequest != null) pendingPermissionRequest.deny();
         pendingPermissionRequest = request;
         if (checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
             grantPendingAudioPermission();
@@ -134,13 +160,61 @@ public final class MainActivity extends Activity {
     }
 
     @Override
+    protected void onPause() {
+        tuningActive = false;
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        // A permission dialog pauses the Activity while microphone startup is pending.
+        if (pendingPermissionRequest == null) {
+            webView.evaluateJavascript("window.StringSensei && window.StringSensei.pause()", null);
+            webView.onPause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (webView != null) webView.onResume();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus && tuningActive) getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    public final class AppBridge {
+        @JavascriptInterface
+        public void openSettings() {
+            runOnUiThread(() -> {
+                if (webView == null || webView.getUrl() == null || !isAppOrigin(Uri.parse(webView.getUrl()))) return;
+                startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.parse("package:" + getPackageName())));
+            });
+        }
+
+        @JavascriptInterface
+        public void setTuningActive(boolean active) {
+            runOnUiThread(() -> {
+                if (webView == null || webView.getUrl() == null || !isAppOrigin(Uri.parse(webView.getUrl()))) return;
+                tuningActive = active;
+                if (active && hasWindowFocus()) getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            });
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         if (pendingPermissionRequest != null) {
             pendingPermissionRequest.deny();
             pendingPermissionRequest = null;
         }
         webView.stopLoading();
+        webView.removeJavascriptInterface("StringSenseiAndroid");
         webView.destroy();
+        webView = null;
         super.onDestroy();
     }
 
@@ -148,6 +222,11 @@ public final class MainActivity extends Activity {
         @Override
         public void onPermissionRequest(final PermissionRequest request) {
             runOnUiThread(() -> handlePermissionRequest(request));
+        }
+
+        @Override
+        public void onPermissionRequestCanceled(PermissionRequest request) {
+            if (pendingPermissionRequest == request) pendingPermissionRequest = null;
         }
 
         @Override
@@ -187,21 +266,27 @@ public final class MainActivity extends Activity {
             if (!isAppOrigin(uri)) return null;
 
             String path = uri.getPath();
-            if (path == null || !path.startsWith("/assets/")) return null;
+            if (path == null || !path.startsWith("/assets/")) return missingAsset();
 
             String assetPath = Uri.decode(path.substring("/assets/".length()));
             if (assetPath.isEmpty()) assetPath = "index.html";
-            if (assetPath.contains("..") || assetPath.startsWith("/")) return null;
+            if (assetPath.contains("..") || assetPath.startsWith("/")) return missingAsset();
 
             try {
                 InputStream stream = getAssets().open(assetPath);
                 return new WebResourceResponse(mimeType(assetPath), textEncoding(assetPath), stream);
             } catch (IOException ignored) {
-                return null;
+                return missingAsset();
             }
         }
 
+        private WebResourceResponse missingAsset() {
+            return new WebResourceResponse("text/plain", "UTF-8", 404, "Not Found", null,
+                    new ByteArrayInputStream("Not found".getBytes(StandardCharsets.UTF_8)));
+        }
+
         private void openExternalUrl(Uri uri) {
+            if (!"https".equalsIgnoreCase(uri.getScheme()) && !"http".equalsIgnoreCase(uri.getScheme())) return;
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, uri));
             } catch (Exception ignored) {

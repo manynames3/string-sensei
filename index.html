@@ -9,10 +9,10 @@
     />
     <meta name="theme-color" content="#111111" />
     <title>String Sensei Guitar Tuner</title>
-    <link rel="manifest" href="./manifest.webmanifest?v=37" />
-    <link rel="icon" href="./assets/favicon-sensei-64.png?v=37" type="image/png" sizes="64x64" />
-    <link rel="apple-touch-icon" href="./assets/icon-sensei-192.png?v=37" />
-    <link rel="stylesheet" href="./src/styles.css?v=37" />
+    <link rel="manifest" href="./manifest.webmanifest?v=41" />
+    <link rel="icon" href="./assets/favicon-sensei-64.png?v=41" type="image/png" sizes="64x64" />
+    <link rel="apple-touch-icon" href="./assets/icon-sensei-192.png?v=41" />
+    <link rel="stylesheet" href="./src/styles.css?v=41" />
   </head>
   <body>
     <main class="shell">
@@ -27,12 +27,28 @@
 
       <section class="tuner-app" aria-label="Guitar tuner">
         <div class="status-panel" data-status="idle">
-          <div class="mascot-wrap" id="mascot" aria-live="polite"></div>
+          <div class="mascot-wrap" id="mascot" aria-hidden="true"></div>
           <div class="status-main">
             <div class="status-copy">
+              <p class="current-string" id="current-string">Auto-detect: play one open string</p>
               <p class="status-kicker" id="status-kicker">Ready when you are</p>
               <h2 id="status-title">Start Tuning</h2>
               <p id="status-message">Tap the button, allow microphone access, and play one string at a time.</p>
+            </div>
+
+            <div class="tuning-actions">
+              <button class="primary-button" id="start-button" type="button">Start Tuning</button>
+              <button class="secondary-button" id="stop-button" type="button" hidden>Stop</button>
+              <button class="secondary-button" id="guided-button" type="button">Guided Tune</button>
+              <button class="secondary-button" id="mic-settings" type="button" hidden>App Settings</button>
+            </div>
+
+            <div class="guided-panel" id="guided-panel" hidden>
+              <div>
+                <strong id="guided-title">Tune one string at a time</strong>
+                <p id="guided-copy">Hold each string steady inside +/-5 cents.</p>
+              </div>
+              <div class="guided-dots" id="guided-dots" aria-label="Guided tuning progress"></div>
             </div>
 
             <div class="readout-grid" aria-label="Current tuning readout">
@@ -50,7 +66,7 @@
               </div>
             </div>
 
-            <div class="meter" aria-label="Tuning meter">
+            <div class="meter" role="meter" aria-label="Tuning difference in cents" aria-valuemin="-15" aria-valuemax="15" aria-valuenow="0" aria-valuetext="Waiting for a note">
               <div class="meter-labels" aria-hidden="true">
                 <span>Flat</span>
                 <span>Perfect</span>
@@ -72,9 +88,6 @@
         </div>
 
         <div class="controls">
-          <button class="primary-button" id="start-button" type="button">Start Tuning</button>
-          <button class="secondary-button" id="stop-button" type="button" hidden>Stop</button>
-          <button class="secondary-button" id="guided-button" type="button">Guided Tune</button>
           <label class="select-control tuning-control" for="tuning-preset">
             <span>Tuning</span>
             <select id="tuning-preset"></select>
@@ -89,13 +102,9 @@
           </label>
         </div>
 
-        <div class="guided-panel" id="guided-panel" hidden>
-          <div>
-            <span class="label">Guided Check</span>
-            <strong id="guided-title">Tune one string at a time</strong>
-            <p id="guided-copy">String Sensei will lock each string when it holds steady inside +/-5 cents.</p>
-          </div>
-          <div class="guided-dots" id="guided-dots" aria-label="Guided tuning progress"></div>
+        <div class="utility-row">
+          <p class="privacy-note">Microphone audio stays on this device.</p>
+          <label class="calm-control"><input type="checkbox" id="calm-mode" /> Calm Mode</label>
         </div>
 
         <div class="reference-tones" aria-label="Reference tones">
@@ -111,7 +120,7 @@
             <h3>Sensei Chaos</h3>
             <p>Random field notes from the tuning dojo.</p>
           </div>
-          <p class="chaos-output" id="chaos-output" aria-live="polite">Pluck a string, then let Sensei editorialize.</p>
+          <p class="chaos-output" id="chaos-output">Pluck a string, then let Sensei editorialize.</p>
         </div>
       </section>
 
@@ -128,7 +137,8 @@
         <span>&copy;2026 SUPREME AI VENTURES LLC</span>
       </footer>
     </main>
+    <p id="tuning-announcement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 
-    <script type="module" src="./src/app.js?v=37"></script>
+    <script type="module" src="./src/app.js?v=41"></script>
   </body>
 </html>

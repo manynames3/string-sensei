@@ -16,6 +16,8 @@ String Sensei is a manga-inspired browser and Android guitar tuner with a real m
 - Supports standard, half-step down, drop D, DADGAD, and open G tuning.
 - Includes A4 calibration from 430 Hz to 450 Hz.
 - Includes a guided six-string tuning flow.
+- Keeps guided progress beside the meter and stops the microphone when all six strings are checked.
+- Offers Calm Mode and accessible tuning-status announcements.
 - Runs as a static app and can be installed as a PWA.
 
 ## Privacy
@@ -38,7 +40,13 @@ No environment variables or backend services are required. Microphone access wor
 npm test
 ```
 
-The tests cover note frequency generation, tuning thresholds, alternate tuning target selection, and generated sine-wave pitch detection fixtures.
+The tests cover note frequency generation, tuning hysteresis, time-based guided locking, generated sine and harmonic pitch fixtures at 44.1/48 kHz, and offline cache behavior. Generated signals are not substitutes for real guitar and microphone tests.
+
+With Ego Browser installed and the local server running, interaction and responsive checks can be run with:
+
+```bash
+ego-browser nodejs < tests/browser-check.mjs
+```
 
 ## Android App
 
@@ -50,6 +58,8 @@ cd android
 ```
 
 The debug APK is written to `android/app/build/outputs/apk/debug/app-debug.apk`.
+
+Android build and lint checks use `./gradlew assembleDebug lintDebug` from `android/`. With the debug APK installed on a disposable emulator, `SENSEI_ADB=/path/to/adb node tests/android-check.mjs` checks native permission recovery, rotation, backgrounding, font scaling, and system-bar layout. The script changes and restores emulator display settings; it must not be run on a personal device.
 
 ## Deploy
 

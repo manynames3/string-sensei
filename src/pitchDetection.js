@@ -59,6 +59,8 @@ export function detectPitchYin(buffer, sampleRate, options = {}) {
     return { frequency: null, confidence: 0, reason: "unstable", rms };
   }
   const analysisSize = Math.min(options.analysisSize ?? 3072, maxComparableSamples);
+  // Use the newest complete comparison window, rather than the old buffer tail.
+  const offset = maxComparableSamples - analysisSize;
   const yin = new Float32Array(tauMax + 1);
 
   // YIN compares the waveform against delayed copies of itself. The first delay
@@ -66,7 +68,7 @@ export function detectPitchYin(buffer, sampleRate, options = {}) {
   for (let tau = 1; tau <= tauMax; tau += 1) {
     let delta = 0;
     for (let index = 0; index < analysisSize; index += 1) {
-      const difference = buffer[index] - buffer[index + tau];
+      const difference = buffer[offset + index] - buffer[offset + index + tau];
       delta += difference * difference;
     }
     yin[tau] = delta;

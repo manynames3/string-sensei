@@ -15,6 +15,7 @@ function approx(actual, expected, tolerance = 0.02) {
 
 test("standard tuning frequencies are generated from A4 calibration", () => {
   const targets = getTuningTargets("standard", DEFAULT_CALIBRATION_HZ);
+  assert.deepEqual(targets.map(target => target.stringNumber), [6, 5, 4, 3, 2, 1]);
   const frequencies = Object.fromEntries(targets.map((target) => [target.id, target.frequency]));
 
   approx(frequencies.E2, 82.41);

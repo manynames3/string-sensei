@@ -1,6 +1,28 @@
-import { closestString, centsOff, getFrequencyRange } from "./notes.js?v=37";
+import { closestString, centsOff, getFrequencyRange } from "./notes.js?v=41";
 
 export const METER_RANGE_CENTS = 15;
+
+export class TuningHold {
+  constructor(durationMs = 650) {
+    this.durationMs = durationMs;
+    this.reset();
+  }
+
+  reset() {
+    this.startedAt = null;
+    this.lastAt = null;
+  }
+
+  update(inTune, now) {
+    if (!inTune) {
+      this.reset();
+      return false;
+    }
+    if (this.startedAt === null || now - this.lastAt > 150) this.startedAt = now;
+    this.lastAt = now;
+    return now - this.startedAt >= this.durationMs;
+  }
+}
 
 export const TUNER_STATES = {
   IDLE: "idle",
@@ -32,11 +54,15 @@ export function getTuningReading(frequency, options) {
   const target = closestString(frequency, normalizedOptions);
   const cents = centsOff(frequency, target.frequency);
 
-  if (cents < -5) {
+  const wasTuned = normalizedOptions.previousReading?.state === TUNER_STATES.TUNED
+    && normalizedOptions.previousReading.target.key === target.key;
+  const tolerance = wasTuned ? 7 : 5;
+
+  if (cents < -tolerance) {
     return { state: TUNER_STATES.FLAT, frequency, target, cents, instruction: "Tune Up" };
   }
 
-  if (cents > 5) {
+  if (cents > tolerance) {
     return { state: TUNER_STATES.SHARP, frequency, target, cents, instruction: "Tune Down" };
   }
 

@@ -1,5 +1,5 @@
-import { GUITAR_STRINGS, TUNING_PRESETS } from "./notes.js?v=37";
-import { TUNER_STATES } from "./tunerLogic.js?v=37";
+import { GUITAR_STRINGS, TUNING_PRESETS } from "./notes.js?v=41";
+import { TUNER_STATES } from "./tunerLogic.js?v=41";
 
 const MESSAGES = {
   [TUNER_STATES.FLAT]: [
@@ -38,7 +38,7 @@ const MESSAGES = {
     "Microphone access did not happen. Check browser permissions and try again."
   ],
   [TUNER_STATES.IDLE]: [
-    "Tap the button, allow microphone access, and play one string at a time."
+    "Your guitar called. It wants a training arc. Let's tune one string at a time."
   ]
 };
 
@@ -138,19 +138,19 @@ let lastChaosTemplate = "";
 
 const MASCOT_ASSETS = {
   idle: {
-    src: "./assets/mascots/sensei-waiting-v1.png?v=37",
+    src: "./assets/mascots/sensei-waiting-v1.png?v=41",
     label: "Painted chibi sensei waiting with tea and clock"
   },
   sad: {
-    src: "./assets/mascots/sensei-flat-v1.png?v=37",
+    src: "./assets/mascots/sensei-flat-v1.png?v=41",
     label: "Painted chibi sensei frustrated because the guitar string is flat"
   },
   happy: {
-    src: "./assets/mascots/sensei-tuned-v1.png?v=37",
+    src: "./assets/mascots/sensei-tuned-v1.png?v=41",
     label: "Painted chibi sensei celebrating a perfectly tuned string"
   },
   panic: {
-    src: "./assets/mascots/sensei-sharp-v1.png?v=37",
+    src: "./assets/mascots/sensei-sharp-v1.png?v=41",
     label: "Painted chibi sensei panicking because the guitar string is sharp"
   }
 };
@@ -215,7 +215,7 @@ export function renderStringOptions(targets = GUITAR_STRINGS, selectedKey = "aut
 
 export function renderToneButtons(targets = GUITAR_STRINGS) {
   return targets.map((string) => `
-    <button class="tone-button" type="button" data-tone="${string.id}">
+    <button class="tone-button" type="button" data-tone="${string.id}" aria-pressed="false" aria-label="Play ${string.label} reference tone">
       <span>${string.id}</span>
       <small>${string.frequency.toFixed(2)} Hz</small>
     </button>

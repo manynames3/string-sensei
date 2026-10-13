@@ -20,3 +20,8 @@ The build copies only the web app's `index.html`, `manifest.webmanifest`, `servi
 - The embedded page uses an HTTPS-like local WebView origin so browser microphone APIs remain available.
 - Audio stays on-device and is analyzed by the existing JavaScript pitch detector.
 - External support links open in the device browser.
+- A denied microphone request provides an **App Settings** action.
+- Backgrounding stops microphone capture; returning offers **Start Tuning** to resume.
+- Rotation preserves the page and guided progress. The app respects system font scaling and keeps content clear of system bars.
+- The screen stays awake while microphone tuning is active.
+- WebView debugging is enabled only in debuggable builds. Release builds do not expose the inspection endpoint.

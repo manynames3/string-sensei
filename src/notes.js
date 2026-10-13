@@ -127,7 +127,7 @@ export function getTuningTargets(tuningId = "standard", calibrationHz = DEFAULT_
       ...string,
       id: string.note,
       key: `${preset.id}:${index}`,
-      stringNumber: index + 1,
+      stringNumber: preset.strings.length - index,
       frequency,
       display: `${string.note} - ${string.label}`
     };
